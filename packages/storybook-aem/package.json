@@ -1,11 +1,25 @@
 {
   "name": "storybook-aem",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.3",
+  "description": "Storybook-aem is used to build components in AEM by leveraging Storybook",
   "main": "index.js",
   "bin": {
     "storybook-aem": "bin/storybook-aem"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jzeltman/storybook-aem.git"
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "keywords": [
+    "tooling",
+    "frontend",
+    "storybook",
+    "aem"
+  ],
+  "preferGlobal": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
