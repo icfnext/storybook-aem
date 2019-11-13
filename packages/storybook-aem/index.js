@@ -1,5 +1,5 @@
 const minimist = require('minimist');
-const error = require('./utils/error');
+const error = require('./app/utils/error');
 
 module.exports = () => {
     const args = minimist(process.argv.slice(2));
@@ -7,20 +7,20 @@ module.exports = () => {
 
     switch(cmd) {
         case 'init':
-            require('./cmds/init')(args);
+            require('./app/cmds/init')(args);
             break;
         case 'component':
-            require('./cmds/component')(args);
+            require('./app/cmds/component')(args);
             break;
         case 'content':
-            require('./cmds/content')(args);
+            require('./app/cmds/content')(args);
             break;
         case 'v':
         case 'version':
-            require('./cmds/version')(args);
+            require('./app/cmds/version')(args);
             break;
         case 'help':
-            require('./cmds/help')(args);
+            require('./app/cmds/help')(args);
             break;
         default:
             error(`"${cmd}" is not a valid command. Try "storybook-aem help for assistance.`, true);
