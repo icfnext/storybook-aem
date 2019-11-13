@@ -7,7 +7,7 @@ module.exports = () => {
 
     switch(cmd) {
         case 'init':
-            require('./app/cmds/init')(args);
+            require('./app/cmds/init/init')(args);
             break;
         case 'component':
             require('./app/cmds/component')(args);
