@@ -9,6 +9,11 @@ module.exports = config => {
     const rootPath = `${config.clientlibPath}/`;
     let clientlibs = [];
 
+    const getEntryValue = entry => {
+        if (entry.indexOf(',') !== -1) {
+            return [ entry.split(',') ];
+        } else { return entry }
+    }
     const getClientlibName = clientlib => clientlib.split('clientlib-')[1];
     const getClientlibResourcePath = (clientlib,type) => `/etc.clientlibs/${config.namespace}/clientlibs/${clientlib}.${type}`;
     const selectClientLibsQuestion = [
@@ -64,7 +69,7 @@ module.exports = config => {
             {
                 type: 'input',
                 name: 'entry',
-                message: 'What is the name of the webpack entry?'
+                message: 'What is the name of the webpack entry? A comma-separated list will be converted to an array'
             }
         ];
     }
@@ -86,7 +91,7 @@ module.exports = config => {
                                                 cssResource: getClientlibResourcePath(selectedClientlib.clientlibs,'css'),
                                                 jsAemPath: clientlibResponse.jsAemPath,
                                                 cssAemPath: clientlibResponse.cssAemPath,
-                                                entry: clientlibResponse.entry
+                                                entry: getEntryValue(clientlibResponse.entry)
                                             }
                                         ]
                                     }
