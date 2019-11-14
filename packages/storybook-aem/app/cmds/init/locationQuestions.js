@@ -1,7 +1,8 @@
 const inquirer = require('inquirer');
+const editJsonFile = require('edit-json-file');
 
 module.exports = config => {
-    const rootPath = `${config.jcrRootPath}apps/${config.namespace}/`;
+    const rootPath = `${config.jcrRootPath}/apps/${config.namespace}`;
     const questions = [
         {
             type: 'fuzzypath',
@@ -16,8 +17,8 @@ module.exports = config => {
                 else return false;
             },
             rootPath: rootPath,
-            default: `${rootPath}components/content`,
-            message: 'Where is the component folder?'
+            default: `${rootPath}/components/content`,
+            message: 'Where is the AEM components folder?'
         },
         {
             type: 'fuzzypath',
@@ -32,16 +33,22 @@ module.exports = config => {
                 else return false;
             },
             rootPath: rootPath,
-            default: `${rootPath}clientlibs`,
-            message: 'Where is the clientlibs folder?'
+            default: `${rootPath}/clientlibs`,
+            message: 'Where is the AEM clientlibs folder?'
         }
     ];
 
-    return inquirer.prompt(questions).then(locationAnswers => { 
-        return { 
+    return inquirer.prompt(questions).then(response => { 
+        config = { 
             ...config, 
-            componentPath: locationAnswers.componentPath,
-            clientlibPath: locationAnswers.clientlibPath,
-        }; 
+            componentPath: response.componentPath,
+            clientlibPath: response.clientlibPath,
+        };
+        
+        let file = editJsonFile(config.packageJson);
+            file.set('storybook-aem', config);
+            file.save();
+
+        return config; 
     });
 }

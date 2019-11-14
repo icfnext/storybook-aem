@@ -1,9 +1,6 @@
 const inquirer = require('inquirer');
-const { readdirSync } = require('fs')
-
-const getDirectories = source => readdirSync(source, { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name)
+const editJsonFile = require('edit-json-file');
+const getDirectories = require('../../utils/getDirectories');
 
 module.exports = config => {
     const rootPath = `${config.clientlibPath}/`;
@@ -82,7 +79,7 @@ module.exports = config => {
             .then(selectedClientlib => {
                 return inquirer.prompt(getClientlibQuestions(selectedClientlib.clientlibs))
                                 .then(clientlibResponse => {
-                                    return { 
+                                    config = { 
                                         ...config, 
                                         clientlibs: [ 
                                             {
@@ -94,7 +91,13 @@ module.exports = config => {
                                                 entry: getEntryValue(clientlibResponse.entry)
                                             }
                                         ]
-                                    }
+                                    };
+
+                                    let file = editJsonFile(config.packageJson);
+                                    file.set('storybook-aem', config);
+                                    file.save();
+
+                                    return config;
                                 });
 
             });

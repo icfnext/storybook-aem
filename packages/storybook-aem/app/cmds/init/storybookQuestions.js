@@ -1,3 +1,7 @@
+const inquirer = require('inquirer');
+const editJsonFile = require('edit-json-file');
+const templateAndCopy = require('./templateAndCopy');
+
 module.exports = answers => {
     return [
         {
@@ -20,4 +24,15 @@ module.exports = answers => {
             default: true
         },
     ]
+
+    let file = editJsonFile(`./${config.packageJson}`);
+            file.set('storybook-aem', config);
+            file.set('scripts', {
+                ...file.get('scripts'),
+                'storybook': 'start-storybook -p 4501',
+                'build-storybook': `build-storybook -c ./${config.uiApps}/.storybook -o ./${config.jcrRootPath}/etc/designs/${config.namespace}/storybook`
+            });
+            file.save();
+
+            templateAndCopy(config);
 }
