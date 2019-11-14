@@ -1,0 +1,64 @@
+const inquirer = require('inquirer');
+const fs = require('fs');
+
+const editJsonFile = require("edit-json-file");
+const error = require('../../utils/error');
+const getDirectories = require('../../utils/getDirectories');
+const storyFileDirectory = '../files/stories/'
+
+inquirer.registerPrompt('fuzzypath', require('inquirer-fuzzy-path'));
+
+module.exports = args => {
+    const packageJSON = editJsonFile(`${process.cwd()}/package.json`);
+    let name;
+    if (Object.entries(packageJSON.data).length === 0) {
+        error('No package.json file found. Please run this from the directory with the package.json file for your project', true);
+    } else {
+        
+        const settings = packageJSON.get('storybook-aem');
+        const rootPath = `${settings.componentPath}/`;
+
+        if (!settings && !settings.componentPath) {
+            error('No storybook-aem settings preset. Please initialize your project by running `storybook-aem init`.', true);
+        } else {
+
+            if (args.n || args.name) name = args.name || args.n;
+            else {
+                inquirer.prompt([
+                    {
+                        type: 'list',
+                        name: 'component',
+                        message: 'Generate a Storybook Story for which component?',
+                        choices: getDirectories(rootPath).map( component => { return { name: component }})
+                    }
+                ]).then( response => {
+                    console.log(`Creating Storybook files for the ${response.component} component`, __dirname)
+                    const componentPath = `${rootPath}${response.component}`;
+
+                    fs.writeFile(`${componentPath}/${response.component}.stories.js`,'Storybook stories', (err) => {
+                        if (err) throw err;
+                        console.log(`Created ${componentPath}/${response.component}.stories.js`);
+                    });
+                    fs.writeFile(`${componentPath}/${response.component}.stories.mdx`,'Storybook Docs', (err) => {
+                        if (err) throw err;
+                        console.log(`Created ${componentPath}/${response.component}.stories.mdx`);
+                    });
+                    fs.writeFile(`${componentPath}/${response.component}.test.js`,'Jest tests', (err) => {
+                        if (err) throw err;
+                        console.log(`Created ${componentPath}/${response.component}.test.js`);
+                    });
+                    fs.writeFile(`${componentPath}/${response.component}.content.js`,'AEM Content JSON', (err) => {
+                        if (err) throw err;
+                        console.log(`Created ${componentPath}/${response.component}.content.js`);
+                    });
+                    
+                })
+            }
+
+            // const questions = [
+            //     name,
+            // ]
+            // console.log('settings',settings);
+        }
+    }
+}

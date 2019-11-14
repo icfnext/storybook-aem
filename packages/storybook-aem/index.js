@@ -10,7 +10,11 @@ module.exports = () => {
             require('./app/cmds/init/init')(args);
             break;
         case 'component':
-            require('./app/cmds/component')(args);
+            require('./app/cmds/component/component')(args);
+            break;
+        case 'story':
+        case 'stories':
+            require('./app/cmds/stories/stories')(args);
             break;
         case 'content':
             require('./app/cmds/content')(args);
