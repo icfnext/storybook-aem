@@ -62,12 +62,11 @@ module.exports = config => {
     return inquirer.prompt(questions).then(response => { 
         config = { 
             ...config, 
-            namespace: response.namespace, 
-            packageJson: response.packageJson,
-            uiApps: response.uiApps,
+            ...response,
             jcrRootPath: `${response.uiApps}/src/main/content/jcr_root`
         };
 
+        // should get any existing settings instead of overriding 
         let file = editJsonFile(`${config.packageJson}`);
             file.set('storybook-aem', config);
             console.log('[storybook-aem] Updating your package.json with storybook-aem configurations');
