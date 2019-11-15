@@ -54,6 +54,7 @@ module.exports = config => {
 
         let file = editJsonFile(`${config.packageJson}`);
             file.set('storybook-aem', config);
+            console.log('[storybook-aem] Updating your package.json with storybook-aem configurations');
             file.save();
             
         return config; 

@@ -94,8 +94,9 @@ module.exports = config => {
                                     };
 
                                     let file = editJsonFile(config.packageJson);
-                                    file.set('storybook-aem', config);
-                                    file.save();
+                                        console.log('[storybook-aem] Updating your package.json with storybook-aem clientlib configurations');
+                                        file.set('storybook-aem', config);
+                                        file.save();
 
                                     return config;
                                 });

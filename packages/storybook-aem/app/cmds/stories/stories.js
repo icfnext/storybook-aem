@@ -19,11 +19,12 @@ module.exports = args => {
     } else {
         
         const settings = packageJSON.get('storybook-aem');
-        const rootPath = `${settings.componentPath}/`;
 
-        if (!settings && !settings.componentPath) {
+        if (settings === undefined) {
             error('No storybook-aem settings preset. Please initialize your project by running `storybook-aem init`.', true);
         } else {
+
+            const rootPath = `${settings.componentPath}/`;
 
             if (args.n || args.name) name = args.name || args.n;
             else {

@@ -1,4 +1,4 @@
-# Storybook + AEM
+# Storybook + AEM - Instructions are Depricated
 
 ## Setup 
 1. Add this folder to your UI folder

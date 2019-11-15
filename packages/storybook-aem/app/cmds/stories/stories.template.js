@@ -2,7 +2,6 @@ const fs = require('fs');
 const toCamelCase = require('../../utils/toCamelCase');
 
 module.exports = config => {
-    console.log('config.stories:', config.stories)
     const componentPath = `${config.componentPath}/${config.component}`;
     let fileContents = `/**\n  * Storybook stories for the ${config.component} component\n  */`;
     let ComponentWrapper;
@@ -11,10 +10,10 @@ module.exports = config => {
         fileContents += `\n\n`;
         if (config.htmlType.includes('AEM')) {
             ComponentWrapper = 'AEMWrapper';
-            fileContents += `import AEMWrapper from "@storybook-aem/${config.jsFramework}";\n`
+            fileContents += `import { AEMWrapper } from "${config.jsFramework}-wrapper-components";\n`
         } else if (config.htmlType.includes('Manual')) {
             ComponentWrapper = 'ManualWrapper';
-            fileContents += `import ManualWrapper from "@storybook-aem/${config.jsFramework}";\n`
+            fileContents += `import { ManualWrapper } from "${config.jsFramework}-wrapper-components";\n`
         }
         fileContents += `\n`;
     }
@@ -33,6 +32,9 @@ module.exports = config => {
 
     fs.writeFile(`${componentPath}/${config.component}.stories.js`, fileContents, (err) => {
         if (err) throw err;
-        console.log(`Created ${componentPath}/${config.component}.stories.js`);
+        console.log(`[storybook-aem] Created ${componentPath}/${config.component}.stories.js`);
     });
+
+    console.log(`[storybook-aem] Storybook files created for the ${config.component}, you can find them here: ${componentPath}/`);
+
 }
