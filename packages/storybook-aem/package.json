@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jzeltman/storybook-aem.git"
+    "url": "git+https://github.com/icfnext/storybook-aem.git"
   },
   "engines": {
     "node": ">=8"
@@ -23,7 +23,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Josh Zeltman",
   "license": "ISC",
   "dependencies": {
     "edit-json-file": "^1.3.2",

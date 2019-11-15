@@ -6,6 +6,9 @@ const error = require('../../utils/error');
 const getDirectories = require('../../utils/getDirectories');
 const storyFileDirectory = '../files/stories/'
 
+const storiesTemplate = require('./stories.template');
+const contentTemplate = require('./content.template');
+
 inquirer.registerPrompt('fuzzypath', require('inquirer-fuzzy-path'));
 
 module.exports = args => {
@@ -30,27 +33,49 @@ module.exports = args => {
                         name: 'component',
                         message: 'Generate a Storybook Story for which component?',
                         choices: getDirectories(rootPath).map( component => { return { name: component }})
+                    },
+                    {
+                        type: 'checkbox',
+                        name: 'htmlType',
+                        message: 'Will your story markup come from AEM? Or will you Manually provide the markup - via JS component or HTML string?',
+                        choices: [
+                            { name: 'AEM' },
+                            { name: 'Manual' },
+                            { name: 'Both' }
+                        ]
+                    },
+                    {
+                        type: 'input',
+                        name: 'stories',
+                        message: 'What stories would you like to start with? Add a comma separated list: '
                     }
                 ]).then( response => {
-                    console.log(`Creating Storybook files for the ${response.component} component`, __dirname)
+                    console.log(`Creating Storybook files for the ${response.component} component`)
                     const componentPath = `${rootPath}${response.component}`;
+                    const templateConfig = {
+                        ...settings,
+                        ...response
+                    }
 
-                    fs.writeFile(`${componentPath}/${response.component}.stories.js`,'Storybook stories', (err) => {
-                        if (err) throw err;
-                        console.log(`Created ${componentPath}/${response.component}.stories.js`);
-                    });
-                    fs.writeFile(`${componentPath}/${response.component}.stories.mdx`,'Storybook Docs', (err) => {
+                    storiesTemplate(templateConfig);
+                    contentTemplate(templateConfig);
+
+                    // fs.writeFile(`${componentPath}/${response.component}.stories.js`,`Storybook stories, ${settings.jsFramework}, ${response.stories}`, (err) => {
+                    //     if (err) throw err;
+                    //     console.log(`Created ${componentPath}/${response.component}.stories.js`);
+                    // });
+                    fs.writeFile(`${componentPath}/${response.component}.stories.mdx`,`Storybook Docs, ${settings.jsFramework}, ${response.stories}`, (err) => {
                         if (err) throw err;
                         console.log(`Created ${componentPath}/${response.component}.stories.mdx`);
                     });
-                    fs.writeFile(`${componentPath}/${response.component}.test.js`,'Jest tests', (err) => {
+                    fs.writeFile(`${componentPath}/${response.component}.test.js`,`Jest tests, ${settings.jsFramework}, ${response.stories}`, (err) => {
                         if (err) throw err;
                         console.log(`Created ${componentPath}/${response.component}.test.js`);
                     });
-                    fs.writeFile(`${componentPath}/${response.component}.content.js`,'AEM Content JSON', (err) => {
-                        if (err) throw err;
-                        console.log(`Created ${componentPath}/${response.component}.content.js`);
-                    });
+                    // fs.writeFile(`${componentPath}/${response.component}.content.js`,`AEM Content JSON, ${settings.jsFramework}, ${response.stories}`, (err) => {
+                    //     if (err) throw err;
+                    //     console.log(`Created ${componentPath}/${response.component}.content.js`);
+                    // });
                     
                 })
             }
