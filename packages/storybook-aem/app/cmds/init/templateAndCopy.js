@@ -28,7 +28,7 @@ addParameters({
     },
 });
 
-configure(require.context(${config.storiesPath}, true, /\.stories\.js$/), module);`;
+configure(require.context('${config.storiesPath}', true, /\.stories\.js$/), module);`;
 
     fs.writeFile(`${config.uiApps}/.storybook/config.js`, fileContents, (err) => {
         if (err) throw err;
