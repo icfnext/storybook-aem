@@ -12,7 +12,7 @@ module.exports = config => {
         console.log(`[storybook-aem] Storybook Files Copied to ui.apps folder: ${config.uiApps}/.storybook`);
     });
 
-    let fileContents = `import { addParameters, addDecorator, configure } from @storybook/${config.jsFramework};
+    let fileContents = `import { addParameters, addDecorator, configure } from '@storybook/${config.jsFramework}';
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import { withA11y } from '@storybook/addon-a11y';
 import { DocsPage, DocsContainer } from '@storybook/addon-docs/blocks';
