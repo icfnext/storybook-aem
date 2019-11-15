@@ -32,6 +32,10 @@ module.exports = config => {
             ...response
         };
 
+        if (config.useDefaultStoryLocation) {
+            config.storiesPath = '../src'
+        }
+
         let packages = [
             `@storybook/${config.jsFramework}`,
             `${config.jsFramework}-wrapper-components`,

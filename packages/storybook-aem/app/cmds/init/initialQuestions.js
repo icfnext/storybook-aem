@@ -21,6 +21,22 @@ module.exports = config => {
         },
         {
             type: 'fuzzypath',
+            name: 'projectWebpackConfig',
+            itemType: 'file',
+            depthLimit: 3,
+            rootPath: process.cwd(),
+            default: `${process.cwd()}/webpack.config.js`,
+            excludePath: nodePath => {
+                if (nodePath.startsWith('node_modules') || 
+                    nodePath.startsWith('.git') || 
+                    nodePath.startsWith('.vscode') || 
+                    nodePath.startsWith('.settings')) return true;
+                else return false;
+            },
+            message: 'Where is your webpack.config.js file?'
+        },
+        {
+            type: 'fuzzypath',
             name: 'uiApps',
             itemType: 'directory',
             depthLimit: 3,
