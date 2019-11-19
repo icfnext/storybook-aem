@@ -28,6 +28,10 @@ module.exports = async config => {
         if (!fs.existsSync(storybookDirectory)){
             fs.mkdirSync(storybookDirectory);
         }
+        let defaultStoriesDirectory = path.resolve(cwd, config.projectRoot, config.relativeProjectRoot, config.componentPath, 'designs');
+        if (!fs.existsSync(defaultStoriesDirectory)){
+            fs.mkdirSync(defaultStoriesDirectory);
+        }
 
 let configContents = `import { addParameters, addDecorator, configure } from '@storybook/${config.jsFramework}';
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
@@ -70,6 +74,11 @@ if (config.clientlibs) {
                     console.log(`[storybook-aem] Created ${storybookDirectory}/config.js`);
                 });
             }
+        });
+
+        ncp(path.resolve(__dirname,'../../../designs/'), defaultStoriesDirectory, (err) => {
+            if (err) return console.error(err);
+            console.log(`[storybook-aem] Storybook Default Stories copies to components folder: ${config.componentPath}/designs/`);
         });
 
         let packages = [

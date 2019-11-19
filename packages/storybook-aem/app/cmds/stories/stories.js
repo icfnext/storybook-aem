@@ -4,7 +4,6 @@ const fs = require('fs');
 const editJsonFile = require("edit-json-file");
 const error = require('../../utils/error');
 const getDirectories = require('../../utils/getDirectories');
-const storyFileDirectory = '../files/stories/'
 
 const storiesTemplate = require('./stories.template');
 const contentTemplate = require('./content.template');
