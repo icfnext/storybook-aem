@@ -9,11 +9,11 @@ module.exports = config => {
     if (config.jsFramework) {
         fileContents += `\n\n`;
         if (config.htmlType.includes('AEM')) {
-            ComponentWrapper = 'AEMWrapper';
-            fileContents += `import { AEMWrapper } from "${config.jsFramework}-wrapper-components";\n`
+            ComponentWrapper = 'AsyncWrapper';
+            fileContents += `import { AsyncWrapper } from "${config.jsFramework}-wrapper-components";\n`
         } else if (config.htmlType.includes('Manual')) {
-            ComponentWrapper = 'ManualWrapper';
-            fileContents += `import { ManualWrapper } from "${config.jsFramework}-wrapper-components";\n`
+            ComponentWrapper = 'HTMLWrapper';
+            fileContents += `import { HTMLWrapper } from "${config.jsFramework}-wrapper-components";\n`
         }
         fileContents += `\n`;
     }
@@ -26,7 +26,6 @@ module.exports = config => {
     }
     
     config.stories.forEach( story => {
-        // let storyName = toCamelCase(story)
         fileContents += `export const ${toCamelCase(story)} = () => <${ComponentWrapper} />;\n`
     });
 

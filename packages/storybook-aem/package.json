@@ -27,11 +27,10 @@
   "license": "ISC",
   "dependencies": {
     "edit-json-file": "^1.3.2",
-    "inquirer": "^7.0.0",
-    "inquirer-fuzzy-path": "^2.1.0",
     "minimist": "^1.2.0",
     "ncp": "^2.0.0",
-    "npm": "^6.13.0"
+    "npm": "^6.13.0",
+    "prompts": "^2.3.0"
   },
   "devDependencies": {
     "ora": "^4.0.3"

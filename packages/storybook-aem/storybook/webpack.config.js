@@ -34,21 +34,23 @@ module.exports = async ({ config, mode }) => {
     config.plugins[0].options.template = path.resolve(__dirname, "index.ejs");
 
     // run project webpack config to keep AEM up to date
-    config.plugins.push(
-        new WebpackLifecyclePlugin({
-            done: () => {
-                const config = require(aemConfig.projectWebpackConfig);
+    if (aemConfig.projectWebpackConfig) {
+        config.plugins.push(
+            new WebpackLifecyclePlugin({
+                done: () => {
+                    const config = require(aemConfig.projectWebpackConfig);
 
-                const compiler = webpack(Object.assign({}, config));
+                    const compiler = webpack(Object.assign({}, config));
 
-                console.log("PROJECT BUILD: START");
+                    console.log("PROJECT BUILD: START");
 
-                compiler.run((err, stats) => {
-                    console.log("PROJECT BUILD: COMPLETE");
-                });
-            }
-        })
-    );
+                    compiler.run((err, stats) => {
+                        console.log("PROJECT BUILD: COMPLETE");
+                    });
+                }
+            })
+        );
+    }
 
     // uncomment for adding props to window
     // config.plugins.push(
