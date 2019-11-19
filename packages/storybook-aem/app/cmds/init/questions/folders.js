@@ -25,14 +25,32 @@ module.exports = async (args, config) => {
     };
 
     // This is kinda brittle. need to make this more reliable
-    const namespace = getDirectories(path.resolve(cwd, config.projectRoot, config.relativeProjectRoot, config.jcrRootPath))[0]
-    const componentClientlibQuestions = [
+    const namespaces = getDirectories(path.resolve(cwd, config.projectRoot, config.relativeProjectRoot, config.jcrRootPath));
+    const namespaceQuestion = [
         {
-            type: 'text',
+            type: 'select',
             name: 'namespace',
             message: 'What is the project namespace?',
-            initial: namespace
+            choices: () => {
+                let options = [];
+
+                namespaces.forEach( name => {
+                    options.push({
+                        title: name,
+                        value: name
+                    })
+                });
+                return options;
+            },
+            format: res => res
         },
+    ]
+    const namespaceAnswers = await prompts(namespaceQuestion);
+    const namespace = namespaceAnswers.namespace; 
+    
+    config.namespace = namespace;
+
+    const componentClientlibQuestions = [
         {
             type: 'select',
             name: 'componentPath',

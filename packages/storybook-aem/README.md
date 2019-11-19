@@ -7,7 +7,7 @@ Storybook-aem is used to build components in AEM by leveraging Storybook.
 ---
 
 ## Installation
-To install `storybook-aem` run `npm install storybook-aem` from the directory with your `package.json` file.
+To install `storybook-aem` run `npm install storybook-aem -g` from the directory with your `package.json` file.
 
 ## Usage
 To use `storybook-aem` run `storybook-aem init` from the directory with your `package.json` file. Configure your project according to the questions in the init configuration. This will save storybook-aem settings in your `package.json` file. Once you've configured your `storybook-aem` project, you can start storybook via `npm run storybook`. Upon initial load, you will see a welcome story, and a few stories.

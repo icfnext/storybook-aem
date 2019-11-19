@@ -37,9 +37,13 @@ let configContents = `import { addParameters, addDecorator, configure } from '@s
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import { withA11y } from '@storybook/addon-a11y';
 import { DocsPage, DocsContainer } from '@storybook/addon-docs/blocks';
+import theme from './theme';
 
 addDecorator(withA11y);
 addParameters({
+    options: {
+        theme: theme
+    },
     viewport: {
         viewports: INITIAL_VIEWPORTS
     },
@@ -94,7 +98,8 @@ if (config.clientlibs) {
             '@storybook/addon-storysource',
             '@storybook/addon-viewport',
             '@storybook/html',
-            'http-proxy-middleware'
+            'http-proxy-middleware',
+            '@storybook/theming'
         ];
 
         npm.load({ loaded: false }, (err) => {
