@@ -102,6 +102,14 @@ if (config.clientlibs) {
             '@storybook/theming'
         ];
 
+        if (config.jsFramework === 'preact') { 
+            package.push('preact');
+            package.push('preact-compat');
+        }
+        if (config.jsFramework === 'react') { 
+            package.push('react'); 
+        }
+
         npm.load({ loaded: false }, (err) => {
             if (err) throw err;
             

@@ -18,7 +18,6 @@ module.exports = async ({ config, mode }) => {
             use: [
                 {
                     loader: "style-loader"
-                    // loader: MiniCssExtractPlugin.loader
                 },
                 {
                     loader: "css-loader"

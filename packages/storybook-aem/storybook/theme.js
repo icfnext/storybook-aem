@@ -2,7 +2,7 @@ import { create } from '@storybook/theming/create';
 
 export default create({
     base: 'light',
-
+/*
     colorPrimary: 'hotpink',
     colorSecondary: 'deepskyblue',
 
@@ -31,6 +31,7 @@ export default create({
     inputTextColor: 'black',
     inputBorderRadius: 4,
 
+*/
     brandTitle: 'My custom storybook',
     brandUrl: 'https://example.com',
     brandImage: 'https://placehold.it/350x150',
