@@ -14,7 +14,7 @@ module.exports = () => {
             break;
         case 'story':
         case 'stories':
-            require('./app/cmds/stories/stories')(args);
+            require('./app/cmds/stories/story')(args);
             break;
         case 'content':
             require('./app/cmds/content')(args);

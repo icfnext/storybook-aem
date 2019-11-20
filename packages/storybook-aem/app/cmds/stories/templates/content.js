@@ -1,5 +1,5 @@
 const fs = require('fs');
-const toCamelCase = require('../../utils/toCamelCase');
+const toCamelCase = require('../../../utils/toCamelCase');
 
 module.exports = config => {
     console.log('config:', config)

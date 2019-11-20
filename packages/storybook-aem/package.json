@@ -1,6 +1,6 @@
 {
   "name": "storybook-aem",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "Storybook-aem is used to build components in AEM by leveraging Storybook",
   "main": "index.js",
   "bin": {
@@ -33,8 +33,5 @@
     "ncp": "^2.0.0",
     "npm": "^6.13.0",
     "prompts": "^2.3.0"
-  },
-  "devDependencies": {
-    "ora": "^4.0.3"
   }
 }
