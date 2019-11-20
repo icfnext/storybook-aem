@@ -17,15 +17,15 @@ You can add more stories with the command `storybook-aem story` and follow the c
 ## Wrapper Components
 If you investigate a story after it has been generated with `storybook-aem story` you will notice the wrapper-components. These are used to take HTML and wrap it with a JavaScript component to be more easily used and manipulated in Storybook. 
 
-The AsyncWrapper component will fetch a URL and template it's HTML. This is especially useful when fetching component markup from AEM. If you're unfamiliar, AEM will return rendered component HTML, complete with authored data, if you request it's absolute path. 
+The AsyncWrapper component will fetch a URL and template it's HTML via the `componentPath` prop. This is especially useful when fetching component markup from AEM. If you're unfamiliar, AEM will return rendered component HTML, complete with authored data, if you request it's absolute path. 
 
 There are two 'easy' ways to get this path.
 1. You can explore the JCR heirarchy in http://localhost:4502/crx/de to find and copy your component path
 2. In author mode, right click on the component in question, find and copy the `data-path` attribute in the author markup
 
-Once you have the path to the component, prefix the path with `http://localhost:4502` and add the suffix `.html?wcmmode=disabled`, and open in a new tab to see the markup. Add this markup to your AsyncWrapper component.
+Once you have the path to the component, prefix the path with `http://localhost:4502` and add the suffix `.html?wcmmode=disabled`, and open in a new tab to confirm you have the correct path. Once confirmed, add this url as the `componentPath` prop to your AsyncWrapper component.
 
-The HTMLWrapper components accept a prop of a string of the HTML you want to display.
+If you want to use the markup directly, the HTMLWrapper components accept an `html` prop of a string of the HTML you want to display.
 
 ## Default Stories
 Storybook-aem ships with a few default stories to demonstrate patterns. These can be found in your `[componentFolder]/design/`. Feel free to keep or delete them as needed.

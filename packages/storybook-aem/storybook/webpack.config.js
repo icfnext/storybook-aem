@@ -37,7 +37,12 @@ module.exports = async ({ config, mode }) => {
         config.plugins.push(
             new WebpackLifecyclePlugin({
                 done: () => {
-                    const config = require(aemConfig.projectWebpackConfig);
+                    const webpackPath = path.resolve(
+                                                process.cwd(), 
+                                                aemConfig.projectRoot, 
+                                                aemConfig.relativeProjectRoot, 
+                                                aemConfig.projectWebpackConfig)
+                    const config = require(webpackPath);
 
                     const compiler = webpack(Object.assign({}, config));
 

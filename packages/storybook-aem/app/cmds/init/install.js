@@ -89,8 +89,9 @@ if (config.clientlibs) {
             `webpack`,
             `webpack-cli`,
             `babel-loader`,
-            `@storybook/${config.jsFramework}`,
-            `${config.jsFramework}-wrapper-components`,
+            `@babel/plugin-transform-react-jsx`,
+            `@storybook/react`,
+            `react-wrapper-components`,
             '@storybook/addon-a11y',
             '@storybook/addon-backgrounds',
             '@storybook/addon-docs',
@@ -98,16 +99,25 @@ if (config.clientlibs) {
             '@storybook/addon-storysource',
             '@storybook/addon-viewport',
             '@storybook/html',
+            '@storybook/theming',
             'http-proxy-middleware',
-            '@storybook/theming'
+            'react',
         ];
 
-        if (config.jsFramework === 'preact') { 
-            package.push('preact');
-            package.push('preact-compat');
-        }
+        // Currently unsupported because of reasons
+        // if (config.jsFramework === 'preact') { 
+        //     packages.push('preact');
+        //     packages.push('preact-compat');
+        //     packages.push('@babel/core');
+        // }
         if (config.jsFramework === 'react') { 
-            package.push('react'); 
+            packages.push('react'); 
+        }
+
+        if (config.cssPreProcessor === 'sass') {
+            packages.push('style-loader'); 
+            packages.push('css-loader'); 
+            packages.push('sass-loader'); 
         }
 
         npm.load({ loaded: false }, (err) => {

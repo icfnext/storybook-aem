@@ -9,7 +9,7 @@ const install = require('../install');
 
 module.exports = async args => {
 
-    let config = {};
+    let config = { 'jsFramework': 'react' };
     
     const rootPathAnswers = await rootPathPrompts(args)
         config = { ...config, ...rootPathAnswers };

@@ -12,6 +12,7 @@ module.exports = async (args,config) => {
                 { title: 'SASS', value: 'sass' },
             ]
         },
+        /*
         {
             type: 'select',
             name: 'jsFramework',
@@ -22,6 +23,7 @@ module.exports = async (args,config) => {
                 { title: 'Preact', value: 'preact' }
             ]
         }
+        */
     ];
 
     return await prompts(questions);
