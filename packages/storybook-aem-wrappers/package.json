@@ -17,7 +17,8 @@
     "build": "webpack"
   },
   "files": [
-    "lib"
+    "lib",
+    "register.js"
   ],
   "main": "./lib/react.js",
   "keywords": [
