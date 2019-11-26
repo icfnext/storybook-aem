@@ -1,6 +1,6 @@
 {
   "name": "storybook-aem-page-template",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Customizable Page Templates for Storybook",
   "repository": {
     "type": "git",
