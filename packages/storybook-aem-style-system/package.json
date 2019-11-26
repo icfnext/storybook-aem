@@ -2,6 +2,17 @@
   "name": "storybook-aem-style-system",
   "version": "0.1.0",
   "description": "AEM Style System addon for use with Storybook, and storybook-aem",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jzeltman/storybook-aem.git",
+    "directory": "packages/storybook-aem-style-system"
+  },
+  "author": "Josh Zeltman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jzeltman/storybook-aem/issues"
+  },
+  "homepage": "https://github.com/jzeltman/storybook-aem/tree/master/packages/storybook-aem-style-system#readme",
   "scripts": {
     "build": "webpack"
   },
@@ -15,8 +26,6 @@
     "style",
     "system"
   ],
-  "author": "Josh Zeltman",
-  "license": "ISC",
   "peerDependencies": {
     "react": "^16.12.0"
   },

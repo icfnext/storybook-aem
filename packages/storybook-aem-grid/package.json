@@ -2,6 +2,17 @@
   "name": "storybook-aem-grid",
   "version": "0.1.0",
   "description": "Customizable Grid addon decorator for Storybook that uses AEM's grid by default",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jzeltman/storybook-aem.git",
+    "directory": "packages/storybook-aem-grid"
+  },
+  "author": "Josh Zeltman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jzeltman/storybook-aem/issues"
+  },
+  "homepage": "https://github.com/jzeltman/storybook-aem/tree/master/packages/storybook-aem-grid#readme",
   "scripts": {
     "build": "webpack"
   },

@@ -2,6 +2,17 @@
   "name": "storybook-aem-wrappers",
   "version": "0.1.0",
   "description": "Wrapper Components to be used with storybook-aem",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jzeltman/storybook-aem.git",
+    "directory": "packages/storybook-aem-wrappers"
+  },
+  "author": "Josh Zeltman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jzeltman/storybook-aem/issues"
+  },
+  "homepage": "https://github.com/jzeltman/storybook-aem/tree/master/packages/storybook-aem-wrappers#readme",
   "scripts": {
     "build": "webpack"
   },
@@ -14,8 +25,6 @@
     "aem",
     "react"
   ],
-  "author": "Josh Zeltman",
-  "license": "ISC",
   "peerDependencies": {
     "react": "^16.12.0"
   },

@@ -1,7 +1,18 @@
 {
   "name": "storybook-aem-page-template",
   "version": "0.1.0",
-  "description": "Page Templates for Storybook",
+  "description": "Customizable Page Templates for Storybook",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jzeltman/storybook-aem.git",
+    "directory": "packages/storybook-aem-page-template"
+  },
+  "author": "Josh Zeltman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jzeltman/storybook-aem/issues"
+  },
+  "homepage": "https://github.com/jzeltman/storybook-aem/tree/master/packages/storybook-aem-page-template#readme",
   "scripts": {
     "build": "webpack"
   },
@@ -13,8 +24,6 @@
     "storybook",
     "templates"
   ],
-  "author": "Josh Zeltman",
-  "license": "ISC",
   "peerDependencies": {
     "react": "^16.12.0"
   },
