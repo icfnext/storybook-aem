@@ -1,6 +1,6 @@
 {
   "name": "storybook-aem-wrappers",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Wrapper Components to be used with storybook-aem",
   "scripts": {
     "build": "webpack"

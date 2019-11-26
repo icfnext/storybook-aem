@@ -1,6 +1,6 @@
 {
   "name": "storybook-aem-page-template",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Page Templates for Storybook",
   "scripts": {
     "build": "webpack"

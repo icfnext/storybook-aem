@@ -1,11 +1,13 @@
 {
   "name": "storybook-aem-grid",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Customizable Grid addon decorator for Storybook that uses AEM's grid by default",
   "scripts": {
     "build": "webpack"
   },
-  "files": [ "lib" ],
+  "files": [
+    "lib"
+  ],
   "main": "./lib/index.js",
   "keywords": [
     "grid",

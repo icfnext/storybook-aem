@@ -1,11 +1,13 @@
 {
   "name": "storybook-aem-style-system",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "AEM Style System addon for use with Storybook, and storybook-aem",
   "scripts": {
     "build": "webpack"
   },
-  "files": [ "lib" ],
+  "files": [
+    "lib"
+  ],
   "main": "./lib/index.js",
   "keywords": [
     "aem",
