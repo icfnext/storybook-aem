@@ -33,12 +33,12 @@ bower_components
 build/Release
 
 # Dependency directories
-node_modules
-packages/storybook-aem/node_modules
-packages/storybook-aem-grid/node_modules
-packages/storybook-aem-page-template/node_modules
-packages/storybook-aem-style-system/node_modules
-packages/storybook-aem-wrappers/node_modules
+node_modules/
+packages/storybook-aem/node_modules/
+packages/storybook-aem-grid/node_modules/
+packages/storybook-aem-page-template/node_modules/
+packages/storybook-aem-style-system/node_modules/
+packages/storybook-aem-wrappers/node_modules/
 jspm_packages/
 
 # TypeScript v1 declaration files
