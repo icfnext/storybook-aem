@@ -33,13 +33,19 @@ module.exports = async config => {
             fs.mkdirSync(defaultStoriesDirectory);
         }
 
-let configContents = `import { addParameters, addDecorator, configure } from '@storybook/${config.jsFramework}';
+let configContents = `import React from 'react';
+import { addParameters, addDecorator, configure } from '@storybook/react';
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import { withA11y } from '@storybook/addon-a11y';
 import { DocsPage, DocsContainer } from '@storybook/addon-docs/blocks';
+import { withDesign } from 'storybook-addon-designs';
+import withPageTemplate, { AEMGrid, Centered } from 'storybook-aem-page-template';
+
 import theme from './theme';
 
 addDecorator(withA11y);
+addDecorator(withPageTemplate);
+addDecorator(withDesign);
 addParameters({
     options: {
         theme: theme
@@ -49,11 +55,41 @@ addParameters({
     },
     docs: {
         container: DocsContainer,
-        page: DocsPage,
+        page: DocsPage
     },
+    pageTemplate: {
+        defaultTemplate: 'AEM Grid',
+        templates: [
+            {
+                label: 'AEM Grid',
+                template: AEMGrid
+            },
+
+            {
+                label: 'Centered',
+                template: Centered
+            }
+        ]
+    }
 });
 
-configure(require.context('${config.storybookStoryLocation}', true, /\.stories\.js$/), module);`;
+const storyConfig = [
+    require('${config.storybookStoryLocation}/designs/welcome.stories.js'),
+    require('${config.storybookStoryLocation}/designs/typography.stories.js'),
+    require('${config.storybookStoryLocation}/designs/colors.stories.js')
+];
+
+const loaderFn = () => {
+    const req = require.context(
+        '${config.storybookStoryLocation}',
+        true,
+        /.stories.js$/
+    );
+    req.keys().forEach(story => storyConfig.push(req(story)));
+    return storyConfig;
+};
+
+configure(loaderFn, module);`;
 
 let previewHeadContents = false;
 if (config.clientlibs) {
@@ -91,7 +127,6 @@ if (config.clientlibs) {
             `babel-loader`,
             `@babel/plugin-transform-react-jsx`,
             `@storybook/react`,
-            `react-wrapper-components`,
             '@storybook/addon-a11y',
             '@storybook/addon-backgrounds',
             '@storybook/addon-docs',
@@ -100,7 +135,12 @@ if (config.clientlibs) {
             '@storybook/addon-viewport',
             '@storybook/html',
             '@storybook/theming',
+            'storybook-addon-designs',
             'http-proxy-middleware',
+            'storybook-aem-grid',
+            'storybook-aem-style-system',
+            'storybook-aem-page-template',
+            'storybook-aem-wrappers',
             'react',
         ];
 
