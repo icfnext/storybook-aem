@@ -9,7 +9,6 @@ module.exports = {
     output: {
         path: path.resolve("lib"),
         filename: "[name].js",
-        // chunkFilename: '[name].bundle.js',
         libraryTarget: "commonjs2"
     },
     module: {
