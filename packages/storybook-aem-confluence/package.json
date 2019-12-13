@@ -1,0 +1,51 @@
+{
+  "name": "storybook-aem-confluence",
+  "version": "0.0.1",
+  "description": "Storybook-AEM integration with Confluence",
+  "main": "lib/index.js",
+  "files": [
+    "lib",
+    "register.js"
+  ],
+  "scripts": {
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jzeltman/storybook-aem.git"
+  },
+  "keywords": [
+    "storybook",
+    "aem",
+    "confluence",
+    "addons"
+  ],
+  "author": "Josh Zeltman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jzeltman/storybook-aem/issues"
+  },
+  "homepage": "https://github.com/jzeltman/storybook-aem#readme",
+  "peerDependencies": {
+    "react": "^16.12.0"
+  },
+  "dependencies": {
+    "@storybook/addons": "^5.2.6",
+    "@storybook/api": "^5.2.6",
+    "@storybook/components": "^5.2.6",
+    "@storybook/core-events": "^5.2.6",
+    "react": "^16.12.0",
+    "storybook-aem-wrappers": "^0.1.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.7.4",
+    "@babel/plugin-transform-runtime": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "@babel/preset-react": "^7.7.4",
+    "babel-loader": "^8.0.6",
+    "path": "^0.12.7",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  }
+}
