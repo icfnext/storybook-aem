@@ -4,15 +4,15 @@
   "description": "Storybook-aem is used to build components in AEM by leveraging Storybook",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jzeltman/storybook-aem.git",
+    "url": "git+https://github.com/icfnext/storybook-aem.git",
     "directory": "packages/storybook-aem"
   },
   "author": "Josh Zeltman",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jzeltman/storybook-aem/issues"
+    "url": "https://github.com/icfnext/storybook-aem/issues"
   },
-  "homepage": "https://github.com/jzeltman/storybook-aem/tree/master/packages/storybook-aem#readme",
+  "homepage": "https://github.com/icfnext/storybook-aem/tree/master/packages/storybook-aem#readme",
   "main": "index.js",
   "bin": {
     "storybook-aem": "bin/storybook-aem"

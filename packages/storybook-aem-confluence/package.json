@@ -1,28 +1,30 @@
 {
-  "name": "storybook-aem-grid",
-  "version": "0.1.2",
-  "description": "Customizable Grid addon decorator for Storybook that uses AEM's grid by default",
+  "name": "storybook-aem-confluence",
+  "version": "0.0.1",
+  "description": "Integrate Confluence and JIRA with your Storybook stories",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/icfnext/storybook-aem.git",
-    "directory": "packages/storybook-aem-grid"
+    "directory": "packages/storybook-aem-confluence"
   },
   "author": "Josh Zeltman",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/icfnext/storybook-aem/issues"
   },
-  "homepage": "https://github.com/icfnext/storybook-aem/tree/master/packages/storybook-aem-grid#readme",
+  "homepage": "https://github.com/icfnext/storybook-aem/tree/master/packages/storybook-aem-confluence#readme",
   "scripts": {
     "build": "webpack"
   },
   "files": [
     "lib",
-    "register.js"
+    "register.js",
+    "middleware.js"
   ],
   "main": "./lib/index.js",
   "keywords": [
-    "grid",
+    "confluence",
+    "jira",
     "storybook",
     "aem"
   ],
@@ -34,6 +36,9 @@
     "@storybook/addons": "^5.2.6",
     "@storybook/components": "^5.2.6",
     "@storybook/core-events": "^5.2.6",
+    "http-proxy-middleware": "^0.20.0",
+    "node-fetch": "^2.6.0",
+    "postcss-loader": "^3.0.0",
     "react": "^16.12.0"
   },
   "devDependencies": {
@@ -43,7 +48,9 @@
     "@babel/preset-env": "^7.7.4",
     "@babel/preset-react": "^7.7.4",
     "babel-loader": "^8.0.6",
+    "css-loader": "^3.4.2",
     "path": "^0.12.7",
+    "style-loader": "^1.1.3",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
   }
