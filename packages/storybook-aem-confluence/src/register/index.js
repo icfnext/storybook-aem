@@ -6,9 +6,8 @@ import Panel from './src/panel';
 import { ADDON_ID, PANEL_ID, PARAM_KEY } from '../constants';
 
 addons.register(ADDON_ID, api => {
-    console.log('api:', api)
     addons.addPanel(PANEL_ID, {
-        title: 'Confluenceee',
+        title: 'Confluence',
         paramKey: PARAM_KEY,
         render: ({ active, key }) => {
             const parameters = useParameter(PARAM_KEY, null);

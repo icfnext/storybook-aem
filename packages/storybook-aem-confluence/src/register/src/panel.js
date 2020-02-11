@@ -1,57 +1,91 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollArea, Placeholder } from '@storybook/components';
-import { FORCE_RE_RENDER } from '@storybook/core-events';
-import { SET_OPTIONS } from '../../constants';
+import { Tabs, ScrollArea } from '@storybook/components';
 import './confluence.panel.style.css';
 
-// add a way to customize the grid
-const ConfluencePanel = (props) => {
-    const channel = props.channel || false;
-    const [contentID,setContentID] = useState(props.parameters.id || null);
-    const [content,setContent] = useState(null);
-    const [loading,setLoading] = useState(content === null && contentID !== null ? true : false);
+import PanelError from './panel.error';
+import PanelLoading from './panel.loading';
+import PanelEmpty from './panel.empty';
 
+const ConfluencePanel = (props) => {
+    const [storyID,setStoryID] = useState(props.api.getCurrentStoryData().id || false)
+    const [tabs,setTabs] = useState(('tabs' in props.parameters) ? props.parameters.tabs : []);
+    const [contentID,setContentID] = useState(tabs.length > 0 ? tabs[0].id : null);
+    const [previousContentID,setPreviousContentID] = useState(null);
+    const [content,setContent] = useState(null);
+    const [loading,setLoading] = useState(false);
+    const [error,setError] = useState(false);
+    const getHTML = html => ({ __html: html }); 
+    
     const fetchConfluenceContent = () => {
+        setContent(null);
+        setLoading(true);
+        setPreviousContentID(contentID);
+
         const url = `${window.location.origin}/confluence/${contentID}`;
+
         fetch(url)
             .then(res => res.json())
             .then(json => {
                 setContent(json.json);
                 setLoading(false);
+            })
+            .catch(e => {
+                setLoading(false);
+                setError(e);
             });
-            // const policyJSON = await response.json();
-            // const parsedPolicy = parsePolicy(policyJSON);
     }
-
-    // channel.on(SET_OPTIONS, (options) => {
-    //     // if (options.id !== null && options.id !== contentID) setContentID(options.id);
-    // });
-
+    
     useEffect(() => {
-        if (props.parameters.id !== null && content === null) {
-            if (props.parameters.id !== contentID) setContentID(props.parameters.id);
-            setLoading(true);
+        if (storyID != props.api.getCurrentStoryData().id) {
+            setStoryID(props.api.getCurrentStoryData().id)
+            
+            if (!'tabs' in props.parameters) setTabs([]);
+            if (
+                ('tabs' in props.parameters) &&
+                JSON.stringify(props.parameters.tabs) !== JSON.stringify(tabs)
+            ) { 
+                setContentID(props.parameters.tabs[0].id);
+                setTabs(props.parameters.tabs);
+            }
+        }
+        
+        if (
+            contentID && 
+            contentID !== previousContentID && 
+            !loading
+        ) {
             fetchConfluenceContent();
         }
     });
-    console.log('ConfluencePanel props:', props,content);
 
-    const getHTML = html => ({ __html: html }); 
+    const getContentMarkup = () => (
+        <div 
+            className="confluence-panel" 
+            dangerouslySetInnerHTML={getHTML(content.body.view.value)} 
+        />
+    );
+    const loadingMarkup = content === null || loading ? <PanelLoading /> : <></>;
+    const contentMarkup = content !== null ? getContentMarkup() : <></>;
 
-    if (content === null && loading) {
+    if (error) return <PanelError error={error} />
+    if (tabs.length === 0) return <PanelEmpty />;
+    else {
         return (
-            <Placeholder>
-                <strong>Loading Confluence Content</strong>
-            </Placeholder>
-        )
-    } else {
-        return (
-            <ScrollArea>
-                <div 
-                    className="confluence-panel" 
-                    dangerouslySetInnerHTML={getHTML(content.body.view.value)} 
-                />
-            </ScrollArea>
+            <div>
+                <Tabs selected={contentID} actions={{ onSelect: id => setContentID(id) }}>
+                    {tabs.map((tab,key) => (
+                        <div 
+                            key={key}
+                            id={tab.id} 
+                            title={tab.title} 
+                        >
+                            {(active) => !active ? null : (
+                                <ScrollArea key={key}>{loading ? loadingMarkup : contentMarkup}</ScrollArea>
+                            )}
+                        </div>
+                    ))}
+                </Tabs>
+            </div>
         )
     }
 }
