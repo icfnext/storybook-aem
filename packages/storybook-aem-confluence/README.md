@@ -49,13 +49,14 @@ And finally, in your stories you can use the confluence panel like so:
 ```
 // path/to/your/story.js
 // You may also add the confluence parameter on individual stories as well
+// This id is the content id from confluence, often found in the URL of the page
 export default {
     parameters: {
         confluence: {
             tabs: [
                 {
                     title: 'Tab 1',
-                    id: '123456789'
+                    id: '123456789' 
                 },
                 {
                     title: 'Tab 2',
