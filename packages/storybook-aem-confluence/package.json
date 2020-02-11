@@ -33,7 +33,6 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.7.4",
-    "@storybook/addon-actions": "^5.3.12",
     "@storybook/addons": "^5.2.6",
     "@storybook/components": "^5.2.6",
     "@storybook/core-events": "^5.2.6",

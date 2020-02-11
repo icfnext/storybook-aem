@@ -21,11 +21,6 @@ module.exports = ConfluenceMiddleware = (config) => {
                 .then(json => {
                     if (json) res.json({ json: json });
                     else res.status(404).send('Not found');
-                    // const stream = new Readable
-                    // stream.push(json.results[0].body.view.value)
-                    // stream.push(null)
-    
-                    // stream.pipe(tranform(rootUri)).pipe(res)
                 })
                 .catch(e => {
                     console.error('\n\n\nfetch error:', e)
