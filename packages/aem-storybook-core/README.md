@@ -3,7 +3,7 @@
 AEM Storybook Core provides some of the core functionality needed in AEM to make storybook-aem work in an AEM hosted context.
 
 ## Installation
-TODO How does this get into AEM? It should get automatically installed by the other projects when needed if at all possible.
+TODO
 
 ## Features
 
