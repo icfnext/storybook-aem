@@ -36,6 +36,7 @@
     "inquirer-fuzzy-path": "^2.1.0",
     "minimist": "^1.2.0",
     "ncp": "^2.0.0",
+    "node-fetch": "^2.6.0",
     "npm": "^6.13.0",
     "prompts": "^2.3.0"
   }

@@ -13,8 +13,10 @@ module.exports = config => {
 
             if (config.jsFramework) {
                 if (config.jsFramework === 'react') fileContents += `import React, { Component } from "${config.jsFramework}";\n`
-                fileContents += `import { AsyncWrapper, HTMLWrapper } from "${config.jsFramework}-wrapper-components";\n`
-                fileContents += `\n`;
+                fileContents += `import Wrapper from 'storybook-aem-wrappers';
+import { Grid } from 'storybook-aem-grid';
+import { StyleSystem } from 'storybook-aem-style-system';
+`;
             }
 
             fileContents += `export default { title: '${config.component}' };\n`;
@@ -33,14 +35,26 @@ export const ${story.name} = () => <HTMLWrapper html={${story.name}HTML} />;\n`
         if (story.contentPath) {
             fileContents += `\n
 const ${story.name}ContentPath = "${story.contentPath}";
-export const ${story.name} = () => <AsyncWrapper contentPath={${story.name}ContentPath} />;\n`
+export const ${story.name} = () => (
+    <Wrapper
+        contentPath={${story.name}ContentPath}
+        styleSystem={StyleSystem()}
+        grid={Grid()}
+        classes="${config.component}"
+    />
+);
+${story.name}.story = {
+    name: '${story.name}',
+    parameters: {}
+};`
         }
     });
     
     fs.writeFile(storyPath, fileContents, (err) => {
         if (err) throw err;
-        console.log(`[storybook-aem] Created ${config.componentType}/${config.component}/${config.component}.stories.js`);
+        console.log(`[storybook-aem] Created or Updated ${config.componentType}/${config.component}/${config.component}.stories.js`);
     });
 
-    console.log(`[storybook-aem] Story file created for the ${config.component}, you can find it here: ${storyPath}`);
+    console.log(`[storybook-aem] Story file created for the ${config.component}`);
+    console.log(`[storybook-aem] Story file -> ${storyPath}`);
 }

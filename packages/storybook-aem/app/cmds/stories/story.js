@@ -9,11 +9,12 @@ const toCamelCase = require('../../utils/toCamelCase');
 
 const storiesTemplate = require('./templates/stories');
 const contentTemplate = require('./templates/content');
+const createContentFromStories = require('./createContentFromStories')
 
 const cwd = process.cwd();
 
-
 module.exports = async args => {
+    console.log('local story dev');
     const packageJSON = require(path.resolve(cwd, 'package.json'));
     
     if (Object.entries(packageJSON).length === 0) {
@@ -55,33 +56,47 @@ module.exports = async args => {
         ]);
         storyConfig = { ...storyConfig, ...componentConfig };
 
-        let contentPathConfig = {};
-
-        if (storyConfig.stories.length) { 
-            contentPathConfig= await prompts(storyConfig.stories.map( story => {
-                return {
-                    type: 'text',
-                    name: story,
-                    message: `What is the content path for the -  ${story}  - story?\n    -> Leave blank if you don't have the path\n    -> Content Path must be a path from the AEM JCR starting with /content/ and cannot end with .html`,
-                    format: res => {
-                        if (res !== '') return `http://localhost:4502${res}.html?wcmmode=disabled`;
-                        else return false
-                    },
-                    validate: res => {
-                        if (res === '' || (res.startsWith('/content/')) && !res.endsWith('.html')) return true;
-                        else return 'Content Path must be a path from the AEM JCR starting with /content/ and cannot end with .html';
-                    }
-                }
+        if (storyConfig.stories.length && config.aemContentPath) {
+            storyConfig.createAEMContent = await(prompts({
+                type: 'confirm',
+                name: 'createAEMContent',
+                message: `Create content in AEM for the stories you've listed?` ,
+                initial: true,
+                format: res => res
             }));
         }
 
+        // if (storyConfig.stories.length) { 
+        //     contentPathConfig= await prompts(storyConfig.stories.map( story => {
+        //         return {
+        //             type: 'text',
+        //             name: story,
+        //             message: `What is the content path for the -  ${story}  - story?\n    -> Leave blank if you don't have the path\n    -> Content Path must be a path from the AEM JCR starting with /content/ and cannot end with .html`,
+        //             format: res => {
+        //                 if (res !== '') return `http://localhost:4502${res}.html?wcmmode=disabled`;
+        //                 else return false
+        //             },
+        //             validate: res => {
+        //                 if (res === '' || (res.startsWith('/content/')) && !res.endsWith('.html')) return true;
+        //                 else return 'Content Path must be a path from the AEM JCR starting with /content/ and cannot end with .html';
+        //             }
+        //         }
+        //     }));
+        // }
+
         storyConfig.stories = storyConfig.stories.map( story => {
+            let contentPath = false;
+            if (storyConfig.createAEMContent) {
+                contentPath = `${config.aemContentPath}/${storyConfig.component}/${story}`
+            }
+
             return {
                 name: story,
-                contentPath: contentPathConfig[story] || false
-            }
+                contentPath: contentPath
+            };
         });
 
         storiesTemplate({ ...config, ...storyConfig });
+        createContentFromStories({ ...config, ...storyConfig })
     }
 }
