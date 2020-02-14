@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const base64 = require('base-64');
+const { exec } = require('child_process');
 
 const fetchFromAEM = async config => {
     const errorMessage = config.errorMessage || 'Error Fetching from AEM';
@@ -96,9 +97,13 @@ const createStories = async config => {
         }
     }
 
+    let editorURL = `http://localhost:4502/editor.html${config.aemContentPath}/${config.component}.html`;
+
     console.log(`[storybook-aem] Your stories have been successfully created.`);
     console.log(`[storybook-aem] You can now view and edit your story content`);
-    console.log(`[storybook-aem] Story content -> http://localhost:4502/editor.html${config.aemContentPath}/${config.component}.html`);
+    console.log(`[storybook-aem] Story content -> ${editorURL}`);
+    exec(`open ${editorURL}`);
+    
     // TKTKTK Open link in browser 
     // open `http://localhost:4502/editor.html${config.aemContentPath}/${config.component}.html`
     
@@ -147,10 +152,9 @@ module.exports = async config => {
                         console.log(`[storybook-aem] Creating JCR:Content for '${config.component}' component succeeded.`);
                         console.log(`[storybook-aem] Creating content for stories...`);
                         const storyCreationStatus = await createStories(config);
-                        console.log('storyCreationStatus:', await storyCreationStatus)
                         if (await storyCreationStatus) {
                             console.log(`[storybook-aem] Stories created successfully.`);
-                            
+                            console.log(`[storybook-aem] Story content -> http://localhost:4502/editor.html${config.aemContentPath}/${config.component}.html`);
                         } else {
                             console.log(`[storybook-aem] Stories creation failed. :(`);
                         }

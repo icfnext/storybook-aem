@@ -18,7 +18,14 @@ export default class Wrapper extends Component {
 
     async componentDidMount() {
         if (this.props.contentPath) {
-            const response = await fetch(this.props.contentPath);
+            let url = this.props.contentPath;
+            if (url.indexOf(window.location.origin) === -1) url = `${window.location.origin}${url}`;
+            if (url.indexOf('?wcmmode=disabled') === -1) {
+                if (!url.endsWith('.html') || url.indexOf('.html') === -1) url += '.html';
+                url += '?wcmmode=disabled';
+            }
+            console.log('url',url);
+            const response = await fetch(url);
             const html = await response.text();
             this.setState({ html: html });
         }

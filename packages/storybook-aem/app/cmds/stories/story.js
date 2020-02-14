@@ -87,7 +87,8 @@ module.exports = async args => {
         storyConfig.stories = storyConfig.stories.map( story => {
             let contentPath = false;
             if (storyConfig.createAEMContent) {
-                contentPath = `${config.aemContentPath}/${storyConfig.component}/${story}`
+                contentPath = `${config.aemContentPath}/${storyConfig.component}/jcr:content${config.aemContentDefaultPageContentPath}/${story}`;
+                // contentPath = `${config.aemContentPath}/${storyConfig.component}/${story}`
             }
 
             return {

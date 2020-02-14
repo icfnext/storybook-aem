@@ -12,9 +12,10 @@ module.exports = config => {
             fileContents = `/**\n  * Storybook stories for the ${config.component} component\n  */\n`;
 
             if (config.jsFramework) {
-                if (config.jsFramework === 'react') fileContents += `import React, { Component } from "${config.jsFramework}";\n`
-                if (!story.contentPath) { fileContents += `import { HTMLWrapper } from 'storybook-aem-wrappers';\n`;
-                fileContents += `import Wrapper from 'storybook-aem-wrappers';
+                if (config.jsFramework === 'react') {
+                    fileContents += `import React, { Component } from "${config.jsFramework}";\n`;
+                }
+                fileContents += `import Wrapper, { HTMLWrapper } from 'storybook-aem-wrappers';
 import { Grid } from 'storybook-aem-grid';
 import { StyleSystem } from 'storybook-aem-style-system';
 `;
