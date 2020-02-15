@@ -11,7 +11,15 @@ mvn clean install -PautoInstallPackage
 ## Features
 
 ### Proxy Servlet
-TODO How do you do the admin configurations for the proxy?
 
+#### Configuring the proxy
+Go to the [OSGI console](http://localhost:4502/system/console/configMgr) and look for the "Storybook AEM Proxy" configuration.
+Configure the headers in this format:
+
+    jsonplaceholder.typicode.com||Authorization||Basic c29tZXRlc3RpbmdleGFtcGxldGhpbmc=
+
+This has three parts separated by "||". The first part is the domain that this header will apply to. The second part is the header name and the third part is the header value. This can be used to add basic auth to the request or other request headers.
+
+####
 Using the proxy
-After installing the proxy send a request to http://localhost:4502/bin/aemstorybook-proxy.proxy/https://jsonplaceholder.typicode.com/todos/1
+Send a request to http://localhost:4502/bin/aemstorybook-proxy.proxy/https://jsonplaceholder.typicode.com/todos/1. You should recieve an example JSON response from jsonplaceholder.typicode.com.

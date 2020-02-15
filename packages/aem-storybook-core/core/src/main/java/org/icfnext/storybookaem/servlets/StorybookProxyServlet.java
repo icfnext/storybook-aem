@@ -1,10 +1,12 @@
 package org.icfnext.storybookaem.servlets;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Arrays;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
-
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.util.EntityUtils;
 import org.apache.sling.api.SlingHttpServletRequest;
@@ -19,16 +21,14 @@ import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.http.cookie.SM;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.osgi.services.HttpClientBuilderFactory;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.client.ClientProtocolException;
+import java.util.List;
 
 @Component(service = Servlet.class,
     property = {
@@ -48,12 +48,14 @@ public class StorybookProxyServlet extends SlingSafeMethodsServlet {
     private PoolingHttpClientConnectionManager conMgr;
     private int maxConnections;
     private int maxHostConnections;
+    private List<String> headerConfigs;
 
     @Activate
     protected void activate(Config cfg) {
         if (cfg != null) {
             maxConnections = cfg.maxConnections();
             maxHostConnections = cfg.maxHostConnections();
+            headerConfigs = Arrays.asList(cfg.headers());
         }
     }
 
@@ -71,10 +73,19 @@ public class StorybookProxyServlet extends SlingSafeMethodsServlet {
 
         try {
             final HttpClient client = httpFactory.newBuilder().setConnectionManager(getMultiThreadedConf()).build();
-            httpGet = new HttpGet(new URIBuilder(proxyTargetUrl).build());
+            final URI uri = new URIBuilder(proxyTargetUrl).build();
+            httpGet = new HttpGet(uri);
 
             if (proxyContentType != null) {
                 httpGet.setHeader(HttpHeaders.CONTENT_TYPE, proxyContentType);
+            }
+
+            for (String headerConfig : headerConfigs) {
+                final String[] headerInfo = headerConfig.split("\\|\\|");
+
+                if (uri.getAuthority().equals(headerInfo[0])) {
+                    httpGet.setHeader(headerInfo[1], headerInfo[2]);
+                }
             }
 
             proxyResponse = client.execute(httpGet);
@@ -103,19 +114,16 @@ public class StorybookProxyServlet extends SlingSafeMethodsServlet {
         return conMgr;
     }
 
-    @ObjectClassDefinition(name="", description="")
+    @ObjectClassDefinition(name="Storybook AEM Proxy")
     public @interface Config {
 
-        @AttributeDefinition(name = "", description="")
-        String[] exampleA();
+        @AttributeDefinition(name = "Headers", description="Here you can add headers to different requests. Format: <domain of proxied urls this config applies to>||<header name>||<header value>")
+        String[] headers();
 
-        @AttributeDefinition(name = "", description="")
-        boolean exampleB() default false;
-
-        @AttributeDefinition(name = "", description = "")
+        @AttributeDefinition(name = "Max Connections")
         int maxConnections() default 1;
 
-        @AttributeDefinition(name = "", description = "")
+        @AttributeDefinition(name = "Max Host Connections")
         int maxHostConnections() default 1;
     }
 }
