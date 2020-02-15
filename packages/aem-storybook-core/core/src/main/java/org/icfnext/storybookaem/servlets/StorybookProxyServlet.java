@@ -38,10 +38,7 @@ public class StorybookProxyServlet extends SlingSafeMethodsServlet {
 
     @Override
     protected void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
-    }
-
-    @Override
-    protected void doHead(SlingHttpServletRequest request, SlingHttpServletResponse response) throws ServletException, IOException {
+        response.getWriter().write("Hello, World!");
     }
 
     @ObjectClassDefinition(name="", description="")

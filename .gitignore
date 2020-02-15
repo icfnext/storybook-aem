@@ -67,6 +67,8 @@ typings/
 
 # Code editors
 .idea
+*.iml
 
 # Maven
-packages/aem-storybook-core/target
+packages/aem-storybook-core/core/target
+packages/aem-storybook-core/ui.apps/target
