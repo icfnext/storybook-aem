@@ -1,4 +1,4 @@
-package org.apache.sling.servlets.get.impl;
+package org.icfnext.storybookaem.servlets;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -8,7 +8,7 @@ import javax.servlet.Servlet;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-public class DefaultGetServletTest {
+public class StorybookProxyServletTest {
     @Test public void testDisabledAlias() throws Exception {
         /*
         final DefaultGetServlet servlet = new DefaultGetServlet();

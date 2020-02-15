@@ -67,3 +67,6 @@ typings/
 
 # Code editors
 .idea
+
+# Maven
+packages/aem-storybook-core/target

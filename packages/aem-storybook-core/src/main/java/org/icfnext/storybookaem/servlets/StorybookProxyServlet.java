@@ -1,30 +1,15 @@
-package org.apache.sling.servlets.get.impl;
+package org.icfnext.storybookaem.servlets;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletResponse;
-import org.apache.sling.api.SlingConstants;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import org.apache.sling.api.resource.ResourceNotFoundException;
-import org.apache.sling.api.resource.ResourceUtil;
 import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
-import org.apache.sling.servlets.get.impl.helpers.HeadServletResponse;
-import org.apache.sling.servlets.get.impl.helpers.HtmlRendererServlet;
-import org.apache.sling.servlets.get.impl.helpers.JsonRendererServlet;
-import org.apache.sling.servlets.get.impl.helpers.PlainTextRendererServlet;
-import org.apache.sling.servlets.get.impl.helpers.StreamRendererServlet;
-import org.apache.sling.servlets.get.impl.helpers.XMLRendererServlet;
-import org.apache.sling.xss.XSSAPI;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.Designate;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
@@ -39,7 +24,7 @@ import org.slf4j.LoggerFactory;
             "sling.servlet.methods=GET",
             "sling.servlet.methods=HEAD"
     })
-@Designate(ocd=DefaultGetServlet.Config.class)
+@Designate(ocd=StorybookProxyServlet.Config.class)
 public class StorybookProxyServlet extends SlingSafeMethodsServlet {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
