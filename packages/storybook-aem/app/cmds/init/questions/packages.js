@@ -6,21 +6,21 @@ module.exports = async (args,config) => {
             type: 'toggle',
             name: 'storybookAEMStyleSystem',
             message: `Would you like to use the optional AEM Style System package?`,
-            initial: false,
+            initial: true,
             active: 'Yes',
             inactive: 'No'
         }, {
             type: 'toggle',
             name: 'storybookAEMGrid',
             message: `Would you like to use the optional AEM Grid package?`,
-            initial: false,
+            initial: true,
             active: 'Yes',
             inactive: 'No'
         }, {
             type: 'toggle',
             name: 'storybookAEMPageTemplate',
             message: `Would you like to use the optional AEM Page Template package?`,
-            initial: false,
+            initial: true,
             active: 'Yes',
             inactive: 'No'
         }, {
