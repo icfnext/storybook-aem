@@ -153,7 +153,7 @@ if (config.clientlibs) {
             packages.push('storybook-aem-page-template');
         }
 
-        if (config.storybookAEMCore) {
+        if (config.storybookAEMFoundation) {
           // --- TODO --- //
           // Check to make sure AEM is running on the port specified by `config.storybookAEMPort`
           // If not then console log an error

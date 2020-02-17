@@ -36,9 +36,9 @@ module.exports = async (args,config) => {
     config = { ...config, ... await prompts(questions) };
 
     // If any package is selected that requires the core bundle then storybookAEMCore should be true.
-    config.storybookAEMCore = config.storybookAEMConfluence;
+    config.storybookAEMFoundation = config.storybookAEMConfluence;
 
-    if (config.storybookAEMCore) {
+    if (config.storybookAEMFoundation) {
         const aemCoreQuestion = [
             {
                 type: 'number',
