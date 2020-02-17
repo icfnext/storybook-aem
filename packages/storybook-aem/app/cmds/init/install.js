@@ -14,7 +14,7 @@ module.exports = async config => {
         let storybookLocalPath = `${config.uiApps}/.storybook`;
         let storybookAEMPath = `${config.jcrRootPath}/etc/designs/${config.namespace}/storybook`;
         'build-storybook': `build-storybook -c ${storybookLocalPath} -o ${storybookAEMPath}`
-    */ 
+    */
     packageJSON.scripts = {
         ...packageJSON.scripts,
         'storybook': 'start-storybook -p 4501'
@@ -103,7 +103,7 @@ if (config.clientlibs) {
         ncp(path.resolve(__dirname,'../../../storybook/'), storybookDirectory, (err) => {
             if (err) return console.error(err);
             console.log(`[storybook-aem] Storybook Files Copied to ui.apps folder: ${config.uiApps}/.storybook`);
-    
+
             fs.writeFile(`${storybookDirectory}/config.js`, configContents, (err) => {
                 if (err) throw err;
                 console.log(`[storybook-aem] Created ${storybookDirectory}/config.js`);
@@ -137,32 +137,48 @@ if (config.clientlibs) {
             '@storybook/theming',
             'storybook-addon-designs',
             'http-proxy-middleware',
-            'storybook-aem-grid',
-            'storybook-aem-style-system',
-            'storybook-aem-page-template',
             'storybook-aem-wrappers',
             'react',
         ];
 
+        if (config.storybookAEMStyleSystem) {
+            packages.push('storybook-aem-style-system');
+        }
+
+        if (config.storybookAEMGrid) {
+            packages.push('storybook-aem-grid');
+        }
+
+        if (config.storybookAEMPageTemplate) {
+            packages.push('storybook-aem-page-template');
+        }
+
+        if (config.storybookAEMCore) {
+          // --- TODO --- //
+          // Check to make sure AEM is running on the port specified by `config.storybookAEMPort`
+          // If not then console log an error
+          // If so then run the `mvn clean install -PautoInstallPackage -Daem.port=${config.storybookAEMPort}` command from the "/packages/aem-storybook-core" directory.
+        }
+
         // Currently unsupported because of reasons
-        // if (config.jsFramework === 'preact') { 
+        // if (config.jsFramework === 'preact') {
         //     packages.push('preact');
         //     packages.push('preact-compat');
         //     packages.push('@babel/core');
         // }
-        if (config.jsFramework === 'react') { 
-            packages.push('react'); 
+        if (config.jsFramework === 'react') {
+            packages.push('react');
         }
 
         if (config.cssPreProcessor === 'sass') {
-            packages.push('style-loader'); 
-            packages.push('css-loader'); 
-            packages.push('sass-loader'); 
+            packages.push('style-loader');
+            packages.push('css-loader');
+            packages.push('sass-loader');
         }
 
         npm.load({ loaded: false }, (err) => {
             if (err) throw err;
-            
+
             console.log('[storybook-aem] Installing Storybook dependencies');
             npm.commands.install(packages, (installError, data) => {
                 if (installError) throw installError;
