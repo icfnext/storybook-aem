@@ -70,5 +70,5 @@ typings/
 *.iml
 
 # Maven
-packages/aem-storybook-core/core/target
-packages/aem-storybook-core/ui.apps/target
+packages/storybook-aem-foundation/core/target
+packages/storybook-aem-foundation/ui.apps/target
