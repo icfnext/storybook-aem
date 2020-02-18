@@ -9,7 +9,7 @@ const toCamelCase = require('../../utils/toCamelCase');
 
 const storiesTemplate = require('./templates/stories');
 const contentTemplate = require('./templates/content');
-const createContentFromStories = require('./createContentFromStories')
+const createContentFromStories = require('../content/contentFromStories');
 
 const cwd = process.cwd();
 
