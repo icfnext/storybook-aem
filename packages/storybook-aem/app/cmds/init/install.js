@@ -3,6 +3,7 @@ const path = require('path');
 const npm = require('npm');
 const ncp = require('ncp');
 const cwd = process.cwd();
+const { exec } = require('child_process');
 
 module.exports = async config => {
     const packageJSONPath = path.resolve(cwd, config.projectRoot, config.relativeProjectRoot, config.packageJSON)
@@ -154,10 +155,7 @@ if (config.clientlibs) {
         }
 
         if (config.storybookAEMFoundation) {
-          // --- TODO --- //
-          // Check to make sure AEM is running on the port specified by `config.storybookAEMPort`
-          // If not then console log an error
-          // If so then run the `mvn clean install -PautoInstallPackage -Daem.port=${config.storybookAEMPort}` command from the "/packages/aem-storybook-core" directory.
+            packages.push('storybook-aem-foundation');
         }
 
         // Currently unsupported because of reasons
@@ -182,10 +180,22 @@ if (config.clientlibs) {
             console.log('[storybook-aem] Installing Storybook dependencies');
             npm.commands.install(packages, (installError, data) => {
                 if (installError) throw installError;
+                if (config.storybookAEMFoundation) {
+                    exec(`cd node_modules/storybook-aem-foundation; mvn clean install -PautoInstallPackage -Daem.port=${config.storybookAEMPort}`, (error, stdout, stderr) => {
+                        if (error) {
+                            console.error(`error: ${error.message}`);
+                        } else if (stderr) {
+                            console.error('Is AEM Running?');
+                            console.error(`stderr: ${stderr}`);
+                        } else {
+                            console.log(`stdout: ${stdout}`);
+                        }
+                    });
+                }
+                console.log('[storybook-aem] Run `npm run storybook` to start storybook on port 4501')
             });
 
             npm.on('log', (message) => console.log(message));
-            console.log('[storybook-aem] When installation is complete, run `npm run storybook` to start storybook on port 4501')
         });
     }
 
