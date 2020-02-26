@@ -20,7 +20,7 @@ const createStories = async config => {
 
         // Then Component
         let component = {};
-
+        
         if (!cqTemplate) {
             component['jcr:primaryType'] = 'nt:unstructured';
             component['sling:resourceType'] = `${config.namespace}/components/${config.componentType}/${config.component}`;
@@ -29,11 +29,13 @@ const createStories = async config => {
             component = cqTemplate;
         }
 
+        component['jcr:storybookStory'] = `${config.component}|${story.displayName}`;
+
         content[`${story.name}Heading`] = heading;
         content[`${story.name}`] = component;
     });
 
-    console.log('JSON.stringify(content)',JSON.stringify(content));
+    // console.log('JSON.stringify(content)',JSON.stringify(content));
     
     const componentCreation = await fetchFromAEM({
         url: `${baseURL}?${[

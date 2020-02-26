@@ -21,22 +21,19 @@ import { StyleSystem } from 'storybook-aem-style-system';
 `;
             }
 
-            fileContents += `export default { title: '${config.component}' };\n`;
+            if (config.storyRoot) {
+                fileContents += `export default { title: '${config.storyRoot}|${config.component}' };\n`;
+            } else {
+                fileContents += `export default { title: '${config.component}' };\n`;
+            }
         }
     } catch(err) {
         console.error(err)
     }
     
     config.stories.forEach( story => {
-        if (!story.contentPath) {
-            fileContents += `\n
-const ${story.name}HTML = \`<div>${config.component} - ${story.name} - Markup Goes Here</div>\`;
-export const ${story.name} = () => <HTMLWrapper html={${story.name}HTML} />;\n`
-        }
-
-        if (story.contentPath) {
-            fileContents += `\n
-const ${story.name}ContentPath = "${story.contentPath}";
+        fileContents += `\n
+const ${story.name}ContentPath = "${story.contentPath || ''}";
 export const ${story.name} = () => (
     <Wrapper
         contentPath={${story.name}ContentPath}
@@ -46,10 +43,9 @@ export const ${story.name} = () => (
     />
 );
 ${story.name}.story = {
-    name: '${story.name}',
+    name: '${story.displayName}',
     parameters: {}
 };`
-        }
     });
     
     fs.writeFile(storyPath, fileContents, (err) => {

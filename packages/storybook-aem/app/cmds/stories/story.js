@@ -5,7 +5,7 @@ const prompts = require('prompts');
 const error = require('../../utils/error');
 const getDirectories = require('../../utils/getDirectories');
 const toCamelCase = require('../../utils/toCamelCase');
-
+const getEditDialog = require('../../utils/getEditDialog');
 
 const storiesTemplate = require('./templates/stories');
 const contentTemplate = require('./templates/content');
@@ -21,7 +21,7 @@ module.exports = async args => {
         error('No package.json file found. Please run this from the directory with the package.json file for your project', true);
     } else {
 
-        const config = packageJSON['storybook-aem'];
+        let config = packageJSON['storybook-aem'];
         let storyConfig = {};
 
         const componentBasePath = path.resolve(cwd, config.projectRoot, config.relativeProjectRoot, config.componentPath );
@@ -49,11 +49,19 @@ module.exports = async args => {
                 message: 'In addition to the default empty story, add a comma separated list of stories would you like to start with:',
                 separator: ',',
                 format: res => {
-                    if (!res.length) return res;
-                    else return res.map( story => toCamelCase(story));
+                    if (!res.length) return false;
+                    // else return res.map( story => toCamelCase(story));
+                    else return res;
                 }
             }
         ]);
+        // Add the empty story
+        if (componentConfig.stories.length === 1 && componentConfig.stories[0] === ''){
+            componentConfig.stories[0] = 'empty';
+        } else {
+            componentConfig.stories.unshift('empty');
+        }
+
         storyConfig = { ...storyConfig, ...componentConfig };
 
         if (storyConfig.stories.length && config.aemContentPath) {
@@ -64,6 +72,19 @@ module.exports = async args => {
                 initial: true,
                 format: res => res
             }));
+
+            storyConfig.stories = storyConfig.stories.map( story => {
+                let contentPath = false;
+                if (storyConfig.createAEMContent) {
+                    contentPath = `${config.aemContentPath}/${storyConfig.component}/jcr:content${config.aemContentDefaultPageContentPath}/${story}`;
+                }
+    
+                return {
+                    name: toCamelCase(story),
+                    displayName: story,
+                    contentPath: contentPath
+                };
+            });
         }
 
         // if (storyConfig.stories.length) { 
@@ -84,20 +105,14 @@ module.exports = async args => {
         //     }));
         // }
 
-        storyConfig.stories = storyConfig.stories.map( story => {
-            let contentPath = false;
-            if (storyConfig.createAEMContent) {
-                contentPath = `${config.aemContentPath}/${storyConfig.component}/jcr:content${config.aemContentDefaultPageContentPath}/${story}`;
-                // contentPath = `${config.aemContentPath}/${storyConfig.component}/${story}`
-            }
+        
 
-            return {
-                name: story,
-                contentPath: contentPath
-            };
-        });
+        config = { ...config, ...storyConfig };
 
-        storiesTemplate({ ...config, ...storyConfig });
-        createContentFromStories({ ...config, ...storyConfig })
+        // let editDialog = getEditDialog(config);
+        // console.log('editDialog:', editDialog)
+
+        storiesTemplate(config);
+        createContentFromStories(config);
     }
 }
