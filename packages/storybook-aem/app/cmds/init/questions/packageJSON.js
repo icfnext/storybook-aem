@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const prompts = require('prompts');
 const cwd = process.cwd();
-const { exec } = require('child_process');
+const { exec } = require('child-process-promise');
 
 module.exports = async (args, config) => {
     let fileLocation = false;
@@ -43,17 +43,17 @@ module.exports = async (args, config) => {
     ];
 
     const answers = await prompts(questions);
+
     if (answers.createPackageJSON) {
-        exec(`npm init -y`, (error, stdout, stderr) => {
-            if (error) {
-                console.error(`error: ${error.message}`);
-            } else if (stderr) {
-                console.error(`stderr: ${stderr}`);
-            } else {
-                answers.packageJSON = `${cwd}/package.json`;
-            }
-        });
+      try {
+        await exec('npm init -y');
+      } catch (e) {
+        console.error('error:', e);
+      }
+      
+      answers.packageJSON = `${cwd}/package.json`;
     }
+
 
     return answers;
 }
