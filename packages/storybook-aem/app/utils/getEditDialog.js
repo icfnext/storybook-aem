@@ -12,7 +12,7 @@ const getEditDialog = config => {
         const xml = fs.readFileSync(cqDialogPath, 'utf-8');
         
         if (!xml) {
-            console.log(`[storybook-aem] There was no _cq_dialog/.content.xml file`,data);
+            console.log(`[storybook-aem] There was no _cq_dialog/.content.xml. Skipping default content.`);
             return false;
 
         } else {
