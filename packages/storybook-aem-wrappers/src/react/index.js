@@ -24,7 +24,6 @@ export default class Wrapper extends Component {
                 if (!url.endsWith('.html') || url.indexOf('.html') === -1) url += '.html';
                 url += '?wcmmode=disabled';
             }
-            console.log('url',url);
             const response = await fetch(url);
             const html = await response.text();
             this.setState({ html: html });
