@@ -1,4 +1,3 @@
-const fs = require('fs');
 const path = require('path');
 const prompts = require('prompts');
 
@@ -8,13 +7,11 @@ const toCamelCase = require('../../utils/toCamelCase');
 const getEditDialog = require('../../utils/getEditDialog');
 
 const storiesTemplate = require('./templates/stories');
-const contentTemplate = require('./templates/content');
 const createContentFromStories = require('../content/contentFromStories');
 
 const cwd = process.cwd();
 
 module.exports = async args => {
-    console.log('local story dev');
     const packageJSON = require(path.resolve(cwd, 'package.json'));
     
     if (Object.entries(packageJSON).length === 0) {
@@ -27,7 +24,7 @@ module.exports = async args => {
         const componentBasePath = path.resolve(cwd, config.projectRoot, config.relativeProjectRoot, config.componentPath );
         const componentType = await prompts([
             {
-                type: 'select',
+                type: 'autocomplete',
                 name: 'componentType',
                 message: 'Generate a Story for which component type?',
                 choices: getDirectories(componentBasePath).map( component => { return { title: component, value: component }})
@@ -38,15 +35,21 @@ module.exports = async args => {
         const componentPath = path.resolve(cwd, config.projectRoot, config.relativeProjectRoot, config.componentPath, componentType.componentType );
         const componentConfig = await prompts([
             {
-                type: 'select',
+                type: 'autocomplete',
                 name: 'component',
                 message: 'Generate a Storybook Story for which component?',
                 choices: getDirectories(componentPath).map( component => { return { title: component, value: component }})
             },
             {
-                type: 'list',
+                type: 'confirm',
+                name: 'hasStories',
+                message: 'Would you like to add some initial stories? We will add the default empty story for you',
+                initial: true
+            },
+            {
+                type: prev => true ? 'list' : null,
                 name: 'stories',
-                message: 'In addition to the default empty story, add a comma separated list of stories would you like to start with:',
+                message: 'Add a comma separated list of stories:',
                 separator: ',',
                 format: res => {
                     if (!res.length) return false;
@@ -55,12 +58,6 @@ module.exports = async args => {
                 }
             }
         ]);
-        // Add the empty story
-        if (componentConfig.stories.length === 1 && componentConfig.stories[0] === ''){
-            componentConfig.stories[0] = 'empty';
-        } else {
-            componentConfig.stories.unshift('empty');
-        }
 
         storyConfig = { ...storyConfig, ...componentConfig };
 
@@ -76,7 +73,7 @@ module.exports = async args => {
             storyConfig.stories = storyConfig.stories.map( story => {
                 let contentPath = false;
                 if (storyConfig.createAEMContent) {
-                    contentPath = `${config.aemContentPath}/${storyConfig.component}/jcr:content${config.aemContentDefaultPageContentPath}/${story}`;
+                    contentPath = `${config.aemContentPath}/${storyConfig.component}/jcr:content${config.aemContentDefaultPageContentPath}/${toCamelCase(story)}`;
                 }
     
                 return {
@@ -85,27 +82,7 @@ module.exports = async args => {
                     contentPath: contentPath
                 };
             });
-        }
-
-        // if (storyConfig.stories.length) { 
-        //     contentPathConfig= await prompts(storyConfig.stories.map( story => {
-        //         return {
-        //             type: 'text',
-        //             name: story,
-        //             message: `What is the content path for the -  ${story}  - story?\n    -> Leave blank if you don't have the path\n    -> Content Path must be a path from the AEM JCR starting with /content/ and cannot end with .html`,
-        //             format: res => {
-        //                 if (res !== '') return `http://localhost:4502${res}.html?wcmmode=disabled`;
-        //                 else return false
-        //             },
-        //             validate: res => {
-        //                 if (res === '' || (res.startsWith('/content/')) && !res.endsWith('.html')) return true;
-        //                 else return 'Content Path must be a path from the AEM JCR starting with /content/ and cannot end with .html';
-        //             }
-        //         }
-        //     }));
-        // }
-
-        
+        }        
 
         config = { ...config, ...storyConfig };
 

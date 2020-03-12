@@ -10,7 +10,7 @@ const getCQTemplate = async config => {
         const xml = fs.readFileSync(cqTemplatePath, 'utf-8');
         
         if (!xml) {
-            console.log(`[storybook-aem] There was no _cq_template.xml file`,data);
+            console.log(`[storybook-aem] There was no _cq_template.xml file. Skipping default content.`);
             return false;
 
         } else {
