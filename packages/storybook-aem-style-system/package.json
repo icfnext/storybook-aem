@@ -1,6 +1,6 @@
 {
   "name": "storybook-aem-style-system",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "AEM Style System addon for use with Storybook, and storybook-aem",
   "repository": {
     "type": "git",
