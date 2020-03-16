@@ -8,15 +8,16 @@ module.exports = async (args, config) => {
     let fileLocation = false;
     let filename = false;
 
-    try {
-        if (fs.existsSync(path.resolve(cwd, config.projectRoot, config.relativeProjectRoot, 'package.json'))) {
-            fileLocation = 'root';
-            filename = `./package.json`;
-        } else if (fs.existsSync(path.resolve(cwd, config.projectRoot, config.relativeProjectRoot, config.uiApps, 'package.json'))) {
-            fileLocation = 'ui.apps';
-            filename = `${config.uiApps}/package.json`;
-        }
-    } catch(err) { throw err; }
+    if (fs.existsSync(path.resolve(cwd, config.projectRoot, config.relativeProjectRoot, 'package.json'))) {
+        fileLocation = 'root';
+        filename = `./package.json`;
+    } else if (fs.existsSync(path.resolve(cwd, config.projectRoot, config.relativeProjectRoot, config.uiApps, 'package.json'))) {
+        fileLocation = 'ui.apps';
+        filename = `${config.uiApps}/package.json`;
+    } else if (fs.existsSync(path.resolve(cwd, 'package.json'))) {
+        fileLocation = 'cwd';
+        filename = '.' + path.resolve(cwd, 'package.json').replace(path.resolve(cwd, config.projectRoot, config.relativeProjectRoot), '');
+    }
 
     // improve this for other package.json locations
     const questions = [
@@ -50,7 +51,7 @@ module.exports = async (args, config) => {
       } catch (e) {
         console.error('error:', e);
       }
-      
+
       answers.packageJSON = `${cwd}/package.json`;
     }
 
