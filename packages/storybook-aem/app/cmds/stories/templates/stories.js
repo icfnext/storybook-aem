@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const log = require('../../../utils/logger');
 
 module.exports = config => {
     const storyPath = path.resolve(process.cwd(), config.projectRoot, config.relativeProjectRoot, config.componentPath, config.componentType, config.component, `${config.component}.stories.js`);
@@ -63,9 +64,9 @@ ${story.name}.story = {
     
     fs.writeFile(storyPath, fileContents.join('\n'), (err) => {
         if (err) throw err;
-        console.log(`[storybook-aem] Created or Updated ${config.componentType}/${config.component}/${config.component}.stories.js`);
+        log(`Created or Updated ${config.componentType}/${config.component}/${config.component}.stories.js`);
     });
 
-    console.log(`[storybook-aem] Story file created for the ${config.component}`);
-    console.log(`[storybook-aem] Story file -> ${storyPath}`);
+    log(`Story file created for the ${config.component}`);
+    log(`Story file -> ${storyPath}`);
 }
