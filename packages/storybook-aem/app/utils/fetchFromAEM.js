@@ -10,8 +10,9 @@ const fetchFromAEM = async config => {
             method: config.method,
             headers: {
                 'Authorization': 'Basic ' + base64.encode(`admin:admin`)
-            }
-        }
+            },
+            body: config.body || null,
+        },
     ).catch(error => console.log(errorMessage,error));
 
     return response;

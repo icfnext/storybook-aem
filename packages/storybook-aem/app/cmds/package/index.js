@@ -14,23 +14,24 @@ module.exports = async args => {
     if (Object.entries(packageJSON).length === 0) {
         error('No package.json file found. Please run this from the directory with the package.json file for your project', true);
     } else {
-        if (args._.includes('install')) Install(args,packageJSON);
-        if (args._.includes('export')) Export(args,packageJSON);
-
-        // Ask questions to see what they want to do
-        const response = await prompts({
-            type: 'autocomplete',
-            name: 'operation',
-            message: [
-                'Do you want to install content into AEM from Code?',
-                '  Or export content from AEM into the codebase?'
-            ].join('\n'),
-            choices: [
-                { title: 'Install', value: 'install' },
-                { title: 'Export', value: 'export' }
-            ]
-        });
-        if (response.operation === 'install') Install(args,packageJSON);
-        if (response.operation === 'export') Export(args,packageJSON);
+        if (args._.includes('install')) Install(args,packageJSON['storybook-aem']);
+        else if (args._.includes('export')) Export(args,packageJSON['storybook-aem']);
+        else {
+            // Ask questions to see what they want to do
+            const response = await prompts({
+                type: 'autocomplete',
+                name: 'operation',
+                message: [
+                    'Do you want to install content into AEM from Code?',
+                    '  Or export content from AEM into the codebase?'
+                ].join('\n'),
+                choices: [
+                    { title: 'Install', value: 'install' },
+                    { title: 'Export', value: 'export' }
+                ]
+            });
+            if (response.operation === 'install') Install(args,packageJSON);
+            if (response.operation === 'export') Export(args,packageJSON);
+        }
     }
 }
