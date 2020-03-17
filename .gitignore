@@ -65,3 +65,11 @@ typings/
 
 # next.js build output
 .next
+
+# Code editors
+.idea
+*.iml
+
+# Maven
+packages/storybook-aem-foundation/core/target
+packages/storybook-aem-foundation/ui.apps/target

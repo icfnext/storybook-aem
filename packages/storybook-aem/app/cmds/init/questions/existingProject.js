@@ -1,6 +1,7 @@
 const rootPathPrompts = require('./rootPath');
 const foldersPrompts = require('./folders');
 const packageJSONPrompts = require('./packageJSON');
+const packagesPrompts = require('./packages');
 const webpackPrompts = require('./webpack');
 const techPrompts = require('./tech');
 const clientlibPrompts = require('./clientlibs');
@@ -10,13 +11,15 @@ const install = require('../install');
 module.exports = async args => {
 
     let config = { 'jsFramework': 'react' };
-    
+
     const rootPathAnswers = await rootPathPrompts(args)
         config = { ...config, ...rootPathAnswers };
     const folderAnswers = await foldersPrompts(args, config);
         config = { ...config, ...folderAnswers };
     const packageJSONAnswers = await packageJSONPrompts(args, config);
         config = { ...config, ...packageJSONAnswers };
+    const packagesAnswers = await packagesPrompts(args, config);
+        config = { ...config, ...packagesAnswers };
     const webpackAnswers = await webpackPrompts(args, config);
         config = { ...config, ...webpackAnswers };
     const techAnswers = await techPrompts(args, config);
@@ -26,5 +29,5 @@ module.exports = async args => {
     const storybookAnswers = await storybookPrompts(args, config);
         config = { ...config, ...storybookAnswers };
 
-    return await install(config);    
+    return await install(config);
 }

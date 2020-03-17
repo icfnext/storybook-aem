@@ -1,0 +1,11 @@
+{
+  "name": "storybook-aem-foundation",
+  "version": "0.0.1",
+  "description": "Foundational AEM components used when storybook-aem connects to AEM.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alex Lockhart",
+  "license": "ISC"
+}
