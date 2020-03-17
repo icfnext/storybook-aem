@@ -1,5 +1,4 @@
-const { version } = require('../package.json')
+const { version } = require('../../package.json');
+const log = require('../utils/logger');
 
-module.exports = (args) => {
-    console.log(`v${version}`)
-}
+module.exports = (args) => log(`v${version}`);

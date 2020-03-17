@@ -3,6 +3,7 @@ const path = require('path');
 const npm = require('npm');
 const ncp = require('ncp');
 const cwd = process.cwd();
+const log = require('../../utils/logger');
 
 module.exports = async config => {
     const packageJSONPath = path.resolve(cwd, config.projectRoot, config.relativeProjectRoot, config.packageJSON)
@@ -102,23 +103,23 @@ if (config.clientlibs) {
 
         ncp(path.resolve(__dirname,'../../../storybook/'), storybookDirectory, (err) => {
             if (err) return console.error(err);
-            console.log(`[storybook-aem] Storybook Files Copied to ui.apps folder: ${config.uiApps}/.storybook`);
+            log(`Storybook Files Copied to ui.apps folder: ${config.uiApps}/.storybook`);
     
             fs.writeFile(`${storybookDirectory}/config.js`, configContents, (err) => {
                 if (err) throw err;
-                console.log(`[storybook-aem] Created ${storybookDirectory}/config.js`);
+                log(`Created ${storybookDirectory}/config.js`);
             });
             if (previewHeadContents) {
                 fs.writeFile(`${storybookDirectory}/preview-head.html`, previewHeadContents, (err) => {
                     if (err) throw err;
-                    console.log(`[storybook-aem] Created ${storybookDirectory}/config.js`);
+                    log(`Created ${storybookDirectory}/config.js`);
                 });
             }
         });
 
         ncp(path.resolve(__dirname,'../../../designs/'), defaultStoriesDirectory, (err) => {
             if (err) return console.error(err);
-            console.log(`[storybook-aem] Storybook Default Stories copies to components folder: ${config.componentPath}/designs/`);
+            log(`Storybook Default Stories copies to components folder: ${config.componentPath}/designs/`);
         });
 
         let packages = [
@@ -163,13 +164,13 @@ if (config.clientlibs) {
         npm.load({ loaded: false }, (err) => {
             if (err) throw err;
             
-            console.log('[storybook-aem] Installing Storybook dependencies');
+            log('Installing Storybook dependencies');
             npm.commands.install(packages, (installError, data) => {
                 if (installError) throw installError;
             });
 
             npm.on('log', (message) => console.log(message));
-            console.log('[storybook-aem] When installation is complete, run `npm run storybook` to start storybook on port 4501')
+            log('When installation is complete, run `npm run storybook` to start storybook on port 4501');
         });
     }
 
