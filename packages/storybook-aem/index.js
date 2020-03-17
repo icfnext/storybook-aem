@@ -21,6 +21,9 @@ module.exports = () => {
         case 'content':
             require('./app/cmds/content')(args);
             break;
+        case 'package':
+            require('./app/cmds/package')(args);
+            break;
         case 'v':
         case 'version':
             require('./app/cmds/version')(args);
