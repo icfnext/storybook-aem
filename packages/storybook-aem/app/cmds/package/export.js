@@ -1,11 +1,34 @@
+const path = require('path');
+const { exec } = require('child_process');
+const cwd = process.cwd();
+
 const log = require('../../utils/logger');
+const fetchFromAEM = require('../../utils/fetchFromAEM');
 
 module.exports = async (args,config) => {
-    log(`export`);
-    /* 
-export
-curl -u admin:admin -X POST http://localhost:4502/crx/packmgr/service/.json/etc/packages/uhc-aem/uhc-storybook-library.zip?cmd=build
-curl -u admin:admin http://localhost:4502/etc/packages/uhc-aem/uhc-storybook-library.zip > /Users/jzeltman/Development/_projects/uhc/uhc-com-replatform/uhc-aem-ui.content/src/main/content/jcr_root/content/storybook-library/uhc-storybook-library.zip
-*/
+    try {
+        const localPackagePath = path.resolve(cwd, config.projectRoot, config.relativeProjectRoot, config.localPackagePath, config.packageName);
+        const packageManagerUrl = `/crx/packmgr/service/.json`;
+        let packageUrl = `/etc/packages`;
+        if (config.packageGroup) packageUrl += `/${config.packageGroup}`;
+        packageUrl += `/${config.packageName}`;
 
-}
+        log(`Rebuilding Storybook AEM Content Package...`);
+        await fetchFromAEM({
+            url: `${packageManagerUrl}${packageUrl}?cmd=build`,
+            method: `POST`
+        });
+        log(`Storybook AEM Content Package Successfully Rebuilt.`);
+
+        log(`Exporting Storybook AEM Content Package...`);
+        await exec(`curl -u admin:admin http://localhost:4502${packageUrl} > ${localPackagePath}`);
+        log(`Successfully Exported Storybook AEM Content Package to the codebase.`)
+        log([
+            `Storybook AEM Content Package File:\n`,
+            `  ${localPackagePath}`,
+            ``
+        ].join('\n'));
+    } catch(e) {
+        throw log(`There was an error exporting the Storybook AEM Content Package`,e);
+    }
+};
