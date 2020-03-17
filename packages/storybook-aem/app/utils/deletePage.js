@@ -6,7 +6,7 @@ const createPage = async config => {
     if (typeof config === 'object') url = `${config.aemContentPath}/${config.component}`;
     
     const response = await fetchFromAEM({
-        url: `${url}?jcr:primaryType=cq:Page`,
+        url: `${url}?:operation=delete`,
         method: 'POST',
         errorMessage: 'Error creating page:'
     });

@@ -1,22 +1,17 @@
 const Import = require('./import');
 const Export = require('./export');
+const log = require('../../utils/logger');
+
 module.exports = async (args) => {
-/*
- Design
-----------------------------------------
- storybook-aem sync
- storybook-aem sync -I
- storybook-aem sync --import
- storybook-aem sync -E
- storybook-aem sync --export
-
-1. No Args = import and export
-2. Args only runs one
-*/
-
-    if (args.I || args.import) await Import();
-    else if (args.E || args.export) await Export();
+    if (args.I || args.import || args._.includes('import')) await Import(args);
+    else if (args.E || args.export || args._.includes('export')) await Export(args);
     else {
-        console.log('Import & Export');
+        log([
+            `Please specify a sync command. For Example:\n`,
+            `  storybook-aem sync <command>\n`,
+            `Where <command> is one of these values:`,
+            `  import, --import, -I`,
+            `  export, --export, -E\n`,
+        ].join('\n'));
     }
-}
+};

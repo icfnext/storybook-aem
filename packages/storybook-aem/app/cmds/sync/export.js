@@ -11,6 +11,23 @@ const getEditDialog = require('../../utils/getEditDialog');
 
 const cwd = process.cwd();
 
+
+
+
+// tktk - change this to use package manager 
+/* 
+export
+curl -u admin:admin -X POST http://localhost:4502/crx/packmgr/service/.json/etc/packages/uhc-aem/uhc-storybook-library.zip?cmd=build
+curl -u admin:admin http://localhost:4502/etc/packages/uhc-aem/uhc-storybook-library.zip > /Users/jzeltman/Development/_projects/uhc/uhc-com-replatform/uhc-aem-ui.content/src/main/content/jcr_root/content/storybook-library/uhc-storybook-library.zip
+*/
+
+const createJSONFile = (filePath,json) => {
+    fs.writeFile(filePath, JSON.stringify(json, null, 4), (err) => {
+        if (err) throw err;
+        // log(`Created file: ${filePath}`);
+    });
+}
+
 module.exports = async args => {
     log(`Running AEM Sync Export process...`);
     const packageJSON = require(path.resolve(cwd, 'package.json'));
@@ -20,9 +37,8 @@ module.exports = async args => {
     } else {
 
         const config = packageJSON['storybook-aem'];
-        if (!config.hasOwnProperty('contentSyncLocation')) {
-            throw(`No 'contentSyncLocation' in package.json`);
-        }
+        if (!config.hasOwnProperty('contentSyncLocation')) throw(`No 'contentSyncLocation' in package.json`);
+
         const contentFolder = path.resolve(process.cwd(), config.projectRoot, config.relativeProjectRoot, config.contentSyncLocation);
         if (!fs.existsSync(contentFolder)) fs.mkdirSync(contentFolder);
 
@@ -37,23 +53,23 @@ module.exports = async args => {
             const keys = Object.keys(json);
             if (keys.length) {
                 log(`Syncing content from AEM into your codebase...`);
-                const rootJSON = {};
+
+                const parentPageJSON = json.hasOwnProperty('jcr:content') ? json['jcr:content'] : {};
+                if (parentPageJSON.hasOwnProperty('jcr:createdBy')) delete parentPageJSON['jcr:createdBy'];
+                createJSONFile(`${contentFolder}/.jcr.content.json`,parentPageJSON);
 
                 // Loop through all the data returned, and make files for each aem page 
-                keys.forEach(key => {
-                    if (json[key].hasOwnProperty('jcr:primaryType') && json[key]['jcr:primaryType'] === 'cq:Page') {
-                        fs.writeFile(`${contentFolder}/${key}.content.json`, JSON.stringify(json[key], null, 4), (err) => {
-                            if (err) throw err;
-                            log(`Created file from AEM Page: ${key}`);
-                        });
-                    } else if (key.includes('jcr:')) rootJSON[key] = json[key];
-                    else log(`Unexpected Key: ${key}`,json[key]);
-                });
+                keys.filter(key => !key.includes('jcr:')).forEach(key => {
+                    const content = json[key];
+                    const jcrContent = content.hasOwnProperty('jcr:content') ? content['jcr:content'] : {};
+                    if (jcrContent) {
+                        delete content['jcr:content'];
+                        // Import will fail if jcr:createdBy property exists
+                        if (jcrContent.hasOwnProperty('jcr:createdBy')) delete jcrContent['jcr:createdBy']
+                    }
 
-                // Make the root file after looping through all the keys. 
-                fs.writeFile(`${contentFolder}/.content.json`, JSON.stringify(rootJSON, null, 4), (err) => {
-                    if (err) throw err;
-                    log(`Created file for Root AEM Page: ${rootJSON['jcr:content']['jcr:title']}`);
+                    log(`Creating file for ${key} AEM Page Content: /${key}/.jcr.content.json`);
+                    createJSONFile(`${contentFolder}/${key}.jcr.content.json`,jcrContent);
                 });
 
                 log(`You can see the file(s) here: ${contentFolder}`);
