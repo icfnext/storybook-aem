@@ -8,6 +8,7 @@ const menus = {
       `Commands:`,
       `  init .................. Start a new project, or add to existing project`,
       `  story ................. Creates/Updates your component story file, Adds story definition, Creates AEM Content example`,
+      `  package ............... Imports & Exports content package from AEM => Code => AEM`,
       `  component ............. WIP - Create a new component in your project. Generates files in the specified component folder`,
       `  content ............... WIP - Create AEM Content saved in the JCR from [component].content.js files`,
       `  help .................. Show help menu for storybook-aem`,
