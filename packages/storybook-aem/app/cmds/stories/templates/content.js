@@ -1,4 +1,5 @@
 const fs = require('fs');
+const log = require('../../../utils/logger');
 const toCamelCase = require('../../../utils/toCamelCase');
 
 module.exports = config => {
@@ -32,8 +33,6 @@ module.exports = config => {
     }
     
 
-    console.log('config.stories:', config.stories)
-
     config.stories.forEach( story => {
         let storyName = toCamelCase(story)
         fileContents += `,
@@ -47,6 +46,6 @@ module.exports = config => {
 
     fs.writeFile(`${componentPath}/${config.component}.content.js`, fileContents, (err) => {
         if (err) throw err;
-        console.log(`Created ${componentPath}/${config.component}.stories.js`);
+        log(`Created ${componentPath}/${config.component}.stories.js`);
     });
 }
