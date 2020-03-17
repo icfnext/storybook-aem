@@ -1,4 +1,3 @@
+const log = require('../utils/logger');
 
-module.exports = async (args) => {
-    console.log('Storybook-AEM Content\n', args);
-}
+module.exports = async (args) => log('Storybook-AEM Content\n');
