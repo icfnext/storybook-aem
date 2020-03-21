@@ -14,7 +14,8 @@
   },
   "homepage": "https://github.com/icfnext/storybook-aem/tree/master/packages/storybook-aem-style-system#readme",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "watch": "webpack -w"
   },
   "files": [
     "lib",
