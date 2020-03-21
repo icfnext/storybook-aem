@@ -32,5 +32,8 @@ module.exports = async (args,config) => {
         `You can see the Storybook AEM Content here:\n`,
         `  http://localhost:4502/sites.html${config.aemContentPath}\n`
     ].join('\n'));
-    exec(`open http://localhost:4502/sites.html${config.aemContentPath}`);
+    
+    if (!args.hasOwnProperty('quiet')) {
+        exec(`open http://localhost:4502/sites.html${config.aemContentPath}`);
+    }
 };
