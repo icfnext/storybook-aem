@@ -1,5 +1,7 @@
 const minimist = require('minimist');
+const chalk = require('chalk');
 const error = require('./app/utils/error');
+const log = require('./app/utils/logger');
 
 module.exports = () => {
     const args = minimist(process.argv.slice(2));
@@ -22,6 +24,9 @@ module.exports = () => {
         case 'content':
             require('./app/cmds/content')(args);
             break;
+        case 'package':
+            require('./app/cmds/package')(args);
+            break;
         case 'v':
         case 'version':
             require('./app/cmds/version')(args);
@@ -30,7 +35,15 @@ module.exports = () => {
             require('./app/cmds/help')(args);
             break;
         default:
-            error(`"${cmd}" is not a valid command. Try "storybook-aem help for assistance.`, true);
+            log([
+                `${chalk.italic(cmd)} is not a valid command.`,
+                ``,
+                `Usage: ${chalk.italic('storybook-aem <command>')}`,
+                ``,
+                `Where <command> is on of:`,
+                `  init, help, story, version`,
+                ``
+            ].join('\n'));
             break;
     }
 }

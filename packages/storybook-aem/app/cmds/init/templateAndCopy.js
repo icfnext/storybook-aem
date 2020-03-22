@@ -1,11 +1,12 @@
+const fs = require('fs');
 const ncp = require('ncp').ncp;
 const source = `${__dirname}/../../../storybook/.storybook`;
-const fs = require('fs');
+const log = require('../../utils/logger');
 
 module.exports = config => {
     ncp.limit = 16;
 
-    console.log(`[storybook-aem] Copying storybook files to ${config.uiApps}/.storybook`);
+    log(`Copying storybook files to ${config.uiApps}/.storybook`);
 
     let fileContents = `import React from 'react';
 import { addParameters, addDecorator, configure } from '@storybook/${config.jsFramework}';
@@ -67,11 +68,11 @@ configure(loaderFn, module);`;
 
     ncp(source, `${config.uiApps}/.storybook`, (err) => {
         if (err) return console.error(err);
-        console.log(`[storybook-aem] Storybook Files Copied to ui.apps folder: ${config.uiApps}/.storybook`);
+        log(`Storybook Files Copied to ui.apps folder: ${config.uiApps}/.storybook`);
 
         fs.writeFile(`${config.uiApps}/.storybook/config.js`, fileContents, (err) => {
             if (err) throw err;
-            console.log(`[storybook-aem] Created ${config.uiApps}/.storybook/config.js`);
+            log(`Created ${config.uiApps}/.storybook/config.js`);
         });
     });
     
