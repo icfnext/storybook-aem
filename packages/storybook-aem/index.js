@@ -1,11 +1,10 @@
-const minimist = require('minimist');
 const chalk = require('chalk');
 const error = require('./app/utils/error');
 const log = require('./app/utils/logger');
 
 module.exports = () => {
-    const args = minimist(process.argv.slice(2));
-    const cmd = args._[0]
+    const args = process.argv.slice(2);
+    const cmd = args[0];
 
     switch(cmd) {
         case 'init':

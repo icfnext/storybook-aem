@@ -54,9 +54,9 @@ const menus = {
 };
   
 module.exports = (args) => {
-    const subCmd = args._[0] === 'help'
-      ? args._[1]
-      : args._[0]
+    const subCmd = args[0] === 'help'
+      ? args[1]
+      : args[0]
   
     log(menus[subCmd] || menus.main);
 }

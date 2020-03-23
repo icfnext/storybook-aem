@@ -33,7 +33,7 @@ module.exports = async (args,config) => {
         `  http://localhost:4502/sites.html${config.aemContentPath}\n`
     ].join('\n'));
     
-    if (!args.hasOwnProperty('quiet')) {
+    if (!args.includes('--quiet')) {
         exec(`open http://localhost:4502/sites.html${config.aemContentPath}`);
     }
 };
