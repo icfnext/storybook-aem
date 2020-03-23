@@ -10,12 +10,13 @@ const cwd = process.cwd();
 
 module.exports = async args => {
     const packageJSON = require(path.resolve(cwd, 'package.json'));
+    const storybookConfig = packageJSON['storybook-aem'];
     
     if (Object.entries(packageJSON).length === 0) {
         error('No package.json file found. Please run this from the directory with the package.json file for your project', true);
     } else {
-        if (args._.includes('install')) Install(args,packageJSON['storybook-aem']);
-        else if (args._.includes('export')) Export(args,packageJSON['storybook-aem']);
+        if (args.includes('install')) Install(args,storybookConfig);
+        else if (args.includes('export')) Export(args,storybookConfig);
         else {
             // Ask questions to see what they want to do
             const response = await prompts({
@@ -30,8 +31,8 @@ module.exports = async args => {
                     { title: 'Export', value: 'export' }
                 ]
             });
-            if (response.operation === 'install') Install(args,packageJSON);
-            if (response.operation === 'export') Export(args,packageJSON);
+            if (response.operation === 'install') Install(args,storybookConfig);
+            if (response.operation === 'export') Export(args,storybookConfig);
         }
     }
 }
