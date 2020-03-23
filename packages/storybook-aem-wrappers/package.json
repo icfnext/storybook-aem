@@ -14,13 +14,14 @@
   },
   "homepage": "https://github.com/icfnext/storybook-aem/tree/master/packages/storybook-aem-wrappers#readme",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "watch": "webpack -w"
   },
   "files": [
     "lib",
     "register.js"
   ],
-  "main": "./lib/react.js",
+  "main": "./lib/index.js",
   "keywords": [
     "storybook",
     "aem",
