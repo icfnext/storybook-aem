@@ -1,30 +1,4 @@
-// util function to convert the input to string type
-function convertToString(input) {
-  
-    if(input) { 
-      
-         if(typeof input === "string") {
-
-              return input;
-          }
-        
-         return String(input);
-    }
-    return '';
-}
-
-
-// convert string to words
-function toWords(input) {							
-
- input = convertToString(input);
- 
- var regex = /[A-Z\xC0-\xD6\xD8-\xDE]?[a-z\xDF-\xF6\xF8-\xFF]+|[A-Z\xC0-\xD6\xD8-\xDE]+(?![a-z\xDF-\xF6\xF8-\xFF])|\d+/g;
- 
- return input.match(regex);
-
-}
-
+const toWords = require('./toWords');
 
 // convert the input array to camel case
 function toCamelCase(inputArray) {
