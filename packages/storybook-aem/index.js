@@ -1,4 +1,3 @@
-const minimist = require('minimist');
 const chalk = require('chalk');
 const error = require('./app/utils/error');
 const log = require('./app/utils/logger');
