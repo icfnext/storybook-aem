@@ -25,19 +25,32 @@ module.exports = config => {
             fileContents.push(` * Storybook stories for the ${config.component} component`);
             fileContents.push(` */`);
 
-            if (config.jsFramework) {
-                if (config.jsFramework === 'react') {
-                    fileContents.push(`import React, { Component } from "${config.jsFramework}";`);
-                }
-                fileContents.push(`import Wrapper, { HTMLWrapper } from 'storybook-aem-wrappers';`);
-                fileContents.push(`import { Grid } from 'storybook-aem-grid';`);
-                fileContents.push(`import { StyleSystem } from 'storybook-aem-style-system';`);
-                fileContents.push(``);
+            if (config.jsFramework === 'react') {
+                fileContents.push(`import React, { Component } from 'react';`);
             }
 
-            let defaultTitle = config.storyRoot ? `${config.storyRoot}|${config.component}` : `${config.component}`;
+            if (config.jsFramework !== 'react') {
+                fileContents.push(`import { aemMetadata } from '@storybook/aem';`);
+                fileContents.push(`import { fetchFromAEM } from 'storybook-aem-wrappers';`);
+            }
+
+            fileContents.push(`import { Grid } from 'storybook-aem-grid';`);
+            fileContents.push(`import { StyleSystem } from 'storybook-aem-style-system';`);
+            fileContents.push(``);
+
+            let defaultTitle = config.storyRoot ? `${config.storyRoot}/${config.component}` : `${config.component}`;
             fileContents.push(`export default {`);
-            fileContents.push(`    title: '${defaultTitle}'`);
+            fileContents.push(`    title: '${defaultTitle}',`);
+            if (config.jsFramework !== 'react') {
+                fileContents.push(`    decorators: [`);
+                fileContents.push(`        aemMetadata({`);
+                fileContents.push(`            decorationTag: {`);
+                fileContents.push(`                cssClasses: ['${config.component}', 'component', StyleSystem, Grid],`);
+                fileContents.push(`                tagName: 'div'`);
+                fileContents.push(`            }`);
+                fileContents.push(`        })`);
+                fileContents.push(`    ],`);
+            }
             fileContents.push(`};`);
         }
     } catch(err) {
@@ -45,21 +58,28 @@ module.exports = config => {
     }
     
     config.stories.forEach( story => {
-        fileContents.push(`\n
-const ${story.name}ContentPath = "${story.contentPath || ''}";
-export const ${story.name} = () => (
-    <Wrapper
-        contentPath={${story.name}ContentPath}
-        styleSystem={StyleSystem()}
-        grid={Grid()}
-        classes="${config.component}"
-    />
-);
-${story.name}.story = {
-    name: '${story.displayName}',
-    parameters: {
-    }
-};`);
+        fileContents.push(``);
+        fileContents.push(`const ${story.name}ContentPath = "${story.contentPath || ''}";`);
+        if (config.jsFramework !== 'react') {
+            fileContents.push(`export const ${story.name} = () => ({`);
+            fileContents.push(`    template: async () => fetchFromAEM(${story.name}ContentPath)`);
+            fileContents.push(`});`);
+        }
+        if (config.jsFramework === 'react') {
+            fileContents.push(`export const ${story.name} = () => (`);
+            fileContents.push(`    <Wrapper`);
+            fileContents.push(`        contentPath={${story.name}ContentPath}`);
+            fileContents.push(`        styleSystem={StyleSystem()}`);
+            fileContents.push(`        grid={Grid()}`);
+            fileContents.push(`        classes="${config.component}"`);
+            fileContents.push(`    />`);
+            fileContents.push(`);`);
+        }
+        fileContents.push(`${story.name}.story = {`);
+        fileContents.push(`    name: '${story.displayName}',`);
+        fileContents.push(`    parameters: {`);
+        fileContents.push(`    }`);
+        fileContents.push(`};`);
     });
     
     fs.writeFile(storyPath, fileContents.join('\n'), (err) => {
@@ -69,4 +89,4 @@ ${story.name}.story = {
 
     log(`Story file created for the ${config.component}`);
     log(`Story file -> ${storyPath}`);
-}
+};
