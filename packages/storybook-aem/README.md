@@ -6,7 +6,7 @@ Storybook-aem is a command line application - CLI - that is used with [@storyboo
 To install `storybook-aem` run `npm install storybook-aem -g` from the directory with your `package.json` file. Also add it to your project as a development dependency.
 
 ## Commands
-There are several commands provided by `storybook-aem`. You can find a list of them by running `storybook-aem` from your terminal. Or by running the `storybook-aem help` command.
+There are several commands provided by `storybook-aem`. You can find a list of them by running `storybook-aem` from your terminal. Or by running the `storybook-aem help` command. Ensure you are running the `storybook-aem` commands from the folder with your `package.json` file.
 
 ```
 Usage: storybook-aem <command> <options>
@@ -28,11 +28,24 @@ The `storybook-aem story` command is the most used command provided. Running thi
 ### Package
 The `storybook-aem package` command comes with two subcommands - `install` and `export`. When configured, you can use these commands to manage the content for your stories in AEM. If you add an additional step to your maven build, you can also install the content package automatically. 
 
-The `storybook-aem package install` command will POST the content package zip file into AEM and replicate it for use in AEM.
+The `storybook-aem package install` command will POST the content package zip file into AEM and replicate it for use in AEM. By default, the install command will also open your default browser to the package content that was just installed. You can pass the `--quiet` option to prevent this.
+
 The `storybook-aem package export` command will rebuild the content package specified, and then download it to the configured location in your codebase.
 
+#### Package and Maven 
+See the [example.pom.xml](https://github.com/icfnext/storybook-aem/tree/master/packages/storybook-aem/example.pom.xml) file to see how you can add a maven build profile to take advantage of the `storybook-aem package` command. The example adds support for a new maven profile `install-storybook` that can be used like so: `mvn clean install -P install-storybook`. Additionally, this [example.pom.xml](https://github.com/icfnext/storybook-aem/tree/master/packages/storybook-aem/example.pom.xml) expects two scripts in the package.json file:
+
+```
+{
+  "scripts": {
+    "storybook-library:install-maven": "storybook-aem package install --quiet",
+    "storybook-library:export": "storybook-aem package export",
+  }
+}
+```
+
 ### Version
-The `storybook-aem version` command shows the current version of `storybook-aem` you are using.
+The `storybook-aem version` command shows the latest version in NPM and the installed version of `storybook-aem` you are using.
 
 ### Help
 The `storybook-aem help <subcommand>` command will show the help documentation for `storybook-aem` or the specified subcommand.
