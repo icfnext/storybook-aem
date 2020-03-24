@@ -48,7 +48,6 @@ module.exports = async args => {
             stories.push(story);
             if (!story.more) addStory = false;
         }
-        console.log('stories:', stories)
 
                     //     {
                     //         type
@@ -107,29 +106,12 @@ module.exports = async args => {
         //     }
         // ]);
 
-        // storyConfig = { ...storyConfig, ...componentConfig };
-        // console.log('storyConfig:', storyConfig)
 
-        // 
-        // if (stories && stories.length) {
-        //     stories = stories.map( story => {
-        //         console.log('story:', story)
-        //         // let contentPath = false;
-        //         // if (createAEMContent) {
-        //         //     contentPath = `${config.aemContentPath}/${storyConfig.component}/jcr:content${config.aemContentDefaultPageContentPath}/${toCamelCase(story)}`;
-        //         // }
-    
-        //         return {
-        //             name: toCamelCase(story.story),
-        //             displayName: toTitleCase(story.story),
-        //             contentPath: contentPath
-        //         };
-        //     });
-        // }   
-        // console.log('stories:', stories)
-
-
-        // config = { ...config, ...storyConfig };
+        config = { 
+            ...config, 
+            stories,
+            createAEMContent: stories.filter(story => story.createAEMContent || story.duplicate).length > 0
+        };
 
         /*
         "aemContentPath": "/content/uhcdotcom/en/pattern-library",
@@ -145,7 +127,7 @@ module.exports = async args => {
         // let editDialog = getEditDialog(config);
         // console.log('editDialog:', editDialog)
 
-        // storiesTemplate(config);
-        // createContentFromStories(config);
+        storiesTemplate(config);
+        createContentFromStories(config);
     }
 }
