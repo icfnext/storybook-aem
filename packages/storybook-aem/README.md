@@ -45,7 +45,7 @@ See the [example.pom.xml](https://github.com/icfnext/storybook-aem/tree/master/p
 ```
 
 ### Version
-The `storybook-aem version` command shows the latest version in NPM and the installed version of `storybook-aem` you are using.
+The `storybook-aem version` command shows the installed version of `storybook-aem` you are using. On every command ran, there is a check if the latest version of `storybook-aem` is installed.
 
 ### Help
 The `storybook-aem help <subcommand>` command will show the help documentation for `storybook-aem` or the specified subcommand.
