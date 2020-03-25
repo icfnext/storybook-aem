@@ -1,4 +1,6 @@
-const { version } = require('../../package.json');
+const { getInstalledVersion } = require('../utils/versionCheck');
 const log = require('../utils/logger');
 
-module.exports = (args) => log(`v${version}`);
+module.exports = async (args) => {
+    log(`Installed Version: ${getInstalledVersion()}`);
+}

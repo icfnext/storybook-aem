@@ -38,6 +38,8 @@
     "node-fetch": "^2.6.0",
     "npm": "^6.13.0",
     "prompts": "^2.3.0",
-    "xml2json": "^0.12.0"
+    "unzipper": "^0.10.10",
+    "xml2json": "^0.12.0",
+    "zip-promise": "^1.1.1"
   }
 }
