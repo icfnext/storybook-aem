@@ -10,8 +10,9 @@ module.exports = async (args,config) => {
         const localPackagePath = path.resolve(cwd, config.projectRoot, config.relativeProjectRoot, config.localPackagePath, config.packageName);
         const packageManagerUrl = `/crx/packmgr/service/.json`;
         let packageUrl = `/etc/packages`;
-        if (config.packageGroup) packageUrl += `/${config.packageGroup}`;
-        packageUrl += `/${config.packageName}`;
+        if (config.packageGroup) packageUrl += `/${encodeURIComponent(config.packageGroup)}`;
+        packageUrl += `/${encodeURIComponent(config.packageName)}`;
+        let fullPackageUrl = `http://localhost:4502${packageUrl}`;
 
         log(`Rebuilding Storybook AEM Content Package...`);
         await fetchFromAEM({
@@ -20,8 +21,8 @@ module.exports = async (args,config) => {
         });
         log(`Storybook AEM Content Package Successfully Rebuilt.`);
 
-        log(`Exporting Storybook AEM Content Package...`);
-        await exec(`curl -u admin:admin http://localhost:4502${packageUrl} > ${localPackagePath}`);
+        log(`Exporting Storybook AEM Content Package from ...`);
+        await exec(`curl -u admin:admin ${fullPackageUrl} > "${localPackagePath}"`);
         log(`Successfully Exported Storybook AEM Content Package to the codebase.`)
         log([
             `Storybook AEM Content Package File:\n`,
