@@ -1,6 +1,6 @@
 {
   "name": "storybook-aem",
-  "version": "0.8.5",
+  "version": "0.9.0",
   "description": "Storybook-aem is used to build components in AEM by leveraging Storybook",
   "repository": {
     "type": "git",
