@@ -10,14 +10,15 @@ const log = require('../../utils/logger');
 const fetchFromAEM = require('../../utils/fetchFromAEM');
 
 module.exports = async (args,config) => {
-    log(`Checking for Storybook AEM Content Package configuration...`);
     const packageManagerURL = `/crx/packmgr/service.jsp`;
     const storybookPackageDirectory = path.resolve(cwd, config.projectRoot, config.relativeProjectRoot, config.localPackagePath);
     const storybookPackagePath = path.resolve(storybookPackageDirectory, config.packageName);
 
     try {
+      log(`Zipping Storybook library ...`);
       await zip.folder(storybookPackageDirectory, storybookPackagePath);
 
+      log(`Checking for Storybook AEM Content Package ...`);
       if (!fs.existsSync(storybookPackagePath)) {
           throw log(chalk.red(`error, could not find Storybook AEM Content Package`));
       }

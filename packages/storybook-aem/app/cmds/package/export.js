@@ -3,7 +3,6 @@ const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const fs = require('fs');
 const unzipper = require('unzipper');
-const AdmZip = require('adm-zip');
 const log = require('../../utils/logger');
 const fetchFromAEM = require('../../utils/fetchFromAEM');
 
@@ -13,9 +12,8 @@ module.exports = async (args,config) => {
     try {
         const localPackageDirectory = path.resolve(cwd, config.projectRoot, config.relativeProjectRoot, config.localPackagePath);
         const localPackagePath = path.resolve(localPackageDirectory, config.packageName);
-        const jcrRootPath = path.resolve(localPackageDirectory, "jcr_root");
-        const metaInfPath = path.resolve(localPackageDirectory, "META-INF");
         const packageManagerUrl = `/crx/packmgr/service/.json`;
+
         let packageUrl = `/etc/packages`;
         if (config.packageGroup) packageUrl += `/${encodeURIComponent(config.packageGroup)}`;
         packageUrl += `/${encodeURIComponent(config.packageName)}`;
