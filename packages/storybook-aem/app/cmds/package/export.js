@@ -26,7 +26,7 @@ module.exports = async (args,config) => {
         });
 
         log(`Exporting Storybook AEM Library...`);
-        await exec(`curl -u admin:admin ${fullPackageUrl} -o "${localPackagePath}"`);
+        await exec(`curl -u admin:admin ${fullPackageUrl} -o "${localPackagePath}" --create-dirs`);
 
         log(`Unzipping new Storybook Library ...`);
         await fs.createReadStream(localPackagePath)
