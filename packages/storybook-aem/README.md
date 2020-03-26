@@ -28,6 +28,8 @@ The `storybook-aem story` command is the most used command provided. Running thi
 ### Package
 The `storybook-aem package` command comes with two subcommands - `install` and `export`. When configured, you can use these commands to manage the content for your stories in AEM. If you add an additional step to your maven build, you can also install the content package automatically.
 
+To set this up you first need to create a package in the [AEM package manager](http://localhost:4502/crx/packmgr/index.jsp) that is configured with filters that include the content needed for your stories. Then you will need to configure and run the `storybook-aem package export` command as explained below. After this you should add any .content.xml files that are unnecessary to your .gitignore to avoid unnecessary content from being saved to the code base and to avoid merge conflicts.
+
 #### Package Export
 
 The `storybook-aem package export` command will rebuild the specified content package and then download the contents to the configured location in your codebase. The zip file will not be be retained, instead the `jcr_root` and `META-INF` will be saved to the codebase. This should allow for both manual changes and easy version control of the content.
