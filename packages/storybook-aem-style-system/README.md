@@ -1,45 +1,59 @@
-
 # Storybook-AEM-Style-System
 
-> AEM Style System addon for use with Storybook, and storybook-aem
-
-  
+> AEM Style System Addon for use with [@storybook/aem](https://www.npmjs.com/package/@storybook/aem), and [storybook-aem](https://www.npmjs.com/package/storybook-aem) CLI.
 
 ## Usage
 
+Include the Addon in your main or addons file.
 ```
-// .storybook/addons.js
+// .storybook/main.js
+module.exports = {
+    stories: ['../path/to/*.stories.js'],
+    addons: [
+        // Additional Addons
+        'storybook-aem-style-system/register'
+    ]
+};
+```
+
+```
+// .storybook/addons.js file is also supported
 import 'storybook-aem-style-system/register';
 ```
+
+In your story files:
 ```
 // component.stories.js
+import { aemMetadata } from '@storybook/aem';
 import { StyleSystem } from 'storybook-aem-style-system';
-import Wrapper from 'storybook-aem-wrappers';
-
-const contentPath = "http://4501/content/path/to/your/content.html?wcmmode=disabled";
+import MyTemplate from './component.html';
 
 // Pass the policy path as a parameter to aemStyleSystem
 export default {
-  title: 'Components',
+  title: 'Components/Example',
+  decorators: [
+    aemMetadata({
+      decorationTag: {
+        cssClasses: ['example', StyleSystem],
+        tagName: 'div'
+      }
+    })
+  ],
   parameters: {
     aemStyleSystem: {
-      policy: 'http://localhost:4501/conf/uhcdotcom/settings/wcm/policies/uhcdotcom/components/content/cta.infinity.json'
+      policy: '/conf/project_namespace/settings/wcm/policies/project_namespace/components/content/example.infinity.json'
     }
   }
 };
   
-// Add the styleSystem prop to the wrapper component and call the imported Style System function
-export const exampleComponent = () => {
-    return <Wrapper contentPath={contentPath}
-                    styleSystem={StyleSystem()}
-                    classes="example component" />;
-}
+export const exampleComponent = () => ({
+  template: MyTemplate
+});
 // You can assign default styleIds like so
 exampleComponent.story = {
-    name: 'Components|Example',
 	parameters: {
 		aemStyleSystem: {
-			styleIds: ['cta-link']
+			styleIds: ['style-id']
 		}
 	}
 }
