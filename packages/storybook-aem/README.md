@@ -1,43 +1,61 @@
 # storybook-aem
 
-Storybook-aem is used to build components in AEM by leveraging Storybook.
-
----
-## FYI: storybook-aem is a work in progress
----
+Storybook-aem is a command line application - CLI - that is used with [@storybook/aem](https://www.npmjs.com/package/@storybook/aem). It provides useful commands that will speed up your workflow.
 
 ## Installation
-To install `storybook-aem` run `npm install storybook-aem -g` from the directory with your `package.json` file.
+To install `storybook-aem` run `npm install storybook-aem -g` from the directory with your `package.json` file. Also add it to your project as a development dependency.
 
-## Usage
-To use `storybook-aem` run `storybook-aem init` from the directory with your `package.json` file. Configure your project according to the questions in the init configuration. This will save storybook-aem settings in your `package.json` file. Once you've configured your `storybook-aem` project, you can start storybook via `npm run storybook`. Upon initial load, you will see a welcome story, and a few stories.
-
-You can add more stories with the command `storybook-aem story` and follow the configuration. You may have to restart storybook after you add new stories.
-
-## Wrapper Components
-If you investigate a story after it has been generated with `storybook-aem story` you will notice the wrapper-components. These are used to take HTML and wrap it with a JavaScript component to be more easily used and manipulated in Storybook. 
-
-The AsyncWrapper component will fetch a URL and template it's HTML via the `componentPath` prop. This is especially useful when fetching component markup from AEM. If you're unfamiliar, AEM will return rendered component HTML, complete with authored data, if you request it's absolute path. 
-
-There are two 'easy' ways to get this path.
-1. You can explore the JCR heirarchy in http://localhost:4502/crx/de to find and copy your component path
-2. In author mode, right click on the component in question, find and copy the `data-path` attribute in the author markup
-
-Once you have the path to the component, prefix the path with `http://localhost:4502` and add the suffix `.html?wcmmode=disabled`, and open in a new tab to confirm you have the correct path. Once confirmed, add this url as the `componentPath` prop to your AsyncWrapper component.
-
-If you want to use the markup directly, the HTMLWrapper components accept an `html` prop of a string of the HTML you want to display.
-
-## Default Stories
-Storybook-aem ships with a few default stories to demonstrate patterns. These can be found in your `[componentFolder]/design/`. Feel free to keep or delete them as needed.
+## Commands
+There are several commands provided by `storybook-aem`. You can find a list of them by running `storybook-aem` from your terminal. Or by running the `storybook-aem help` command. Ensure you are running the `storybook-aem` commands from the folder with your `package.json` file.
 
 ```
-storybook-aem [command] <options>
+Usage: storybook-aem <command> <options>
 
 Commands:
-  init .................. Start a new storybook-aem project, must run before other commands
-  story, stories ........ Create new storybook story files, along with AEM content json files. 
-  wip - component ....... Create a new component in your project. Generates files in the specified component folder
-  wip - content ......... Create AEM Content saved in the JCR from [component].content.js files
+  init .................. Start a new project, or add to existing project
+  story ................. Creates/Updates your component story file, Adds story definition, Creates AEM Content example
+  package ............... Imports & Exports content package from AEM => Code => AEM
   help .................. Show help menu for storybook-aem
   version, v ............ Show storybook-aem version
 ```
+
+### Init
+TKTKTK More description and refactoring of the `init` command is to come.
+
+### Story
+The `storybook-aem story` command is the most used command provided. Running this command will provide you with a series of prompts to get started adding stories. It will ask for which component and type of component you want to make stories. From there it will create the story definition, and if desired, will also create content in AEM for your story.
+
+### Package
+The `storybook-aem package` command comes with two subcommands - `install` and `export`. When configured, you can use these commands to manage the content for your stories in AEM. If you add an additional step to your maven build, you can also install the content package automatically.
+
+To set this up you first need to create a package in the [AEM package manager](http://localhost:4502/crx/packmgr/index.jsp) that is configured with filters that include the content needed for your stories. Then you will need to configure and run the `storybook-aem package export` command as explained below. After this you should add any .content.xml files that are unnecessary to your .gitignore to avoid unnecessary content from being saved to the code base and to avoid merge conflicts.
+
+#### Package Export
+
+The `storybook-aem package export` command will rebuild the specified content package and then download the contents to the configured location in your codebase. The zip file will not be be retained, instead the `jcr_root` and `META-INF` will be saved to the codebase. This should allow for both manual changes and easy version control of the content.
+
+This command requires that a `localPackagePath` configuration be added to the `storybook-aem` section of your `package.json` file. This configuration should point to the directory within the codebase that you want to save the package to. This directory should not contain anything other than the `jcr_root`, and `META-INF` directories of the package, as created by the `export` command. It is suggested to point this configuration at a `.storybook/aem-library` directory, which will need manually created.
+
+#### Package Install
+
+The `storybook-aem package install` command will create an AEM package from the `localPackagePath` directory as explained in the previous section. It will POST this content package zip file into AEM and replicate it for use in AEM. By default, the install command will also open your default browser to the package content that was just installed. You can pass the `--quiet` option to prevent this.
+
+This command required that a `aemContentPath` configuration be added to the `storybook-aem` section of your `package.json` file. This is the path that will be opened with the Site Editor in AEM after the package is installed.
+
+#### Package and Maven
+See the [example.pom.xml](https://github.com/icfnext/storybook-aem/tree/master/packages/storybook-aem/example.pom.xml) file to see how you can add a maven build profile to take advantage of the `storybook-aem package` command. The example adds support for a new maven profile `install-storybook` that can be used like so: `mvn clean install -P install-storybook`. Additionally, this [example.pom.xml](https://github.com/icfnext/storybook-aem/tree/master/packages/storybook-aem/example.pom.xml) expects two scripts in the package.json file:
+
+```
+{
+  "scripts": {
+    "storybook-library:install-maven": "storybook-aem package install --quiet",
+    "storybook-library:export": "storybook-aem package export",
+  }
+}
+```
+
+### Version
+The `storybook-aem version` command shows the installed version of `storybook-aem` you are using. On every command ran, there is a check if the latest version of `storybook-aem` is installed.
+
+### Help
+The `storybook-aem help <subcommand>` command will show the help documentation for `storybook-aem` or the specified subcommand.

@@ -3,7 +3,7 @@ var path = require("path");
 module.exports = {
     mode: "production",
     entry: {
-        "react" : "./src/react/index",
+        "index" : "./src/index",
     },
     output: {
         path: path.resolve("lib"),

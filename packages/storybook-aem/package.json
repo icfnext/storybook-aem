@@ -1,6 +1,6 @@
 {
   "name": "storybook-aem",
-  "version": "0.8.0",
+  "version": "0.9.3",
   "description": "Storybook-aem is used to build components in AEM by leveraging Storybook",
   "repository": {
     "type": "git",
@@ -32,15 +32,15 @@
   },
   "dependencies": {
     "base-64": "^0.1.0",
+    "boxen": "^4.2.0",
     "chalk": "^3.0.0",
-    "edit-json-file": "^1.3.2",
     "form-data": "^3.0.0",
-    "inquirer": "^7.0.0",
-    "inquirer-fuzzy-path": "^2.1.0",
-    "minimist": "^1.2.0",
     "ncp": "^2.0.0",
     "node-fetch": "^2.6.0",
     "npm": "^6.13.0",
-    "prompts": "^2.3.0"
+    "prompts": "^2.3.0",
+    "unzipper": "^0.10.10",
+    "xml2json": "^0.12.0",
+    "zip-promise": "^1.1.1"
   }
 }

@@ -1,11 +1,7 @@
-const inquirer = require('inquirer');
-const editJsonFile = require("edit-json-file");
 const error = require('../../utils/error');
 
-inquirer.registerPrompt('fuzzypath', require('inquirer-fuzzy-path'));
-
 module.exports = args => {
-    const packageJSON = editJsonFile(`${process.cwd()}/package.json`);
+    const packageJSON = require(path.resolve(cwd, 'package.json'));
 
     if (Object.entries(packageJSON.data).length === 0) {
         error('No package.json file found. Please run this from the directory with the package.json file for your project', true);
