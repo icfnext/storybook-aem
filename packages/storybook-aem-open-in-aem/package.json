@@ -1,0 +1,47 @@
+{
+  "name": "storybook-aem-open-in-aem",
+  "version": "0.0.0",
+  "description": "A tool for @storybook/aem to open story content that is built in AEM",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/icfnext/storybook-aem.git",
+    "directory": "packages/storybook-aem-wrappers"
+  },
+  "author": "Josh Zeltman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/icfnext/storybook-aem/issues"
+  },
+  "homepage": "https://github.com/icfnext/storybook-aem/tree/master/packages/storybook-aem-open-in-aem#readme",
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack -w"
+  },
+  "files": [
+    "lib",
+    "register.js"
+  ],
+  "main": "./lib/index.js",
+  "keywords": [
+    "storybook",
+    "aem",
+    "react"
+  ],
+  "peerDependencies": {
+    "react": "^16.12.0"
+  },
+  "dependencies": {
+    "react": "^16.12.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.7.4",
+    "@babel/plugin-transform-runtime": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "@babel/preset-react": "^7.7.4",
+    "babel-loader": "^8.0.6",
+    "path": "^0.12.7",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  }
+}
