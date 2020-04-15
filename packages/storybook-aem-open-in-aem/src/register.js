@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { addons, types } from '@storybook/addons';
 import { useAddonState, useParameter } from '@storybook/api';
 import { Icons, IconButton } from '@storybook/components';
-import { ADDON_ID, JCR_CONTENT, EDITOR_HTML, DEFAULT_AEM_URL } from './constants';
+import { ADDON_ID, JCR_CONTENT, EDITOR_HTML } from './constants';
 
 export const OpenInAEM = ({ api }) => {
     // Throw and log no error at this point. Not every story has to use the plugin.
@@ -12,8 +12,13 @@ export const OpenInAEM = ({ api }) => {
 
     const storyData = api.getCurrentStoryData();
     const openInAEM = storyData.parameters.openInAEM;
-    const aemUrl = openInAEM && openInAEM.aemUrl ? openInAEM.aemUrl : DEFAULT_AEM_URL;
+    const aemUrl = openInAEM && openInAEM.aemUrl ? openInAEM.aemUrl : '';
     const contentPath = openInAEM.contentPath;
+
+    if (! contentPath.startsWith('/')) {
+      console.error(`aemUrl.contentPath must be a relative path that starts with '/' for the ${storyData.name} story. It was: ${contentPath}`);
+      return null;
+    }
 
     if (! contentPath.includes(JCR_CONTENT)) {
       console.error(`aemUrl.contentPath must contain '${JCR_CONTENT}' for the ${storyData.name} story. It was: ${contentPath}`);

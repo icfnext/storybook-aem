@@ -11,4 +11,3 @@ export const CLICK = `${ADDON_ID}/click`;
 
 export const JCR_CONTENT = 'jcr:content';
 export const EDITOR_HTML = 'editor.html';
-export const DEFAULT_AEM_URL = 'localhost:4502';

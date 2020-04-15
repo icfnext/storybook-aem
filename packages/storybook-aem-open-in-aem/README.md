@@ -1,5 +1,6 @@
-# Storybook-AEM-Wrappers
-> Wrapper components to be used in conjunction with Storybook-AEM
+# Storybook Open in AEM
+
+> This adds a button to the Storybook toolbar that can open a story in AEM.
 
 ## Usage
 ```
@@ -14,6 +15,8 @@ module.exports = {
   ]
 };
 ```
+
+To use a relative url, leave the `aemUrl` parameter blank. Otherwise, enter the url of AEM.
 
 ###### preview.js
 ```js
