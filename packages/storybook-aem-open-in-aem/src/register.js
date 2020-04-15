@@ -2,21 +2,28 @@ import React, { Fragment } from 'react';
 import { addons, types } from '@storybook/addons';
 import { useAddonState, useParameter } from '@storybook/api';
 import { Icons, IconButton } from '@storybook/components';
-import { ADDON_ID } from './constants';
+import { ADDON_ID, JCR_CONTENT, EDITOR_HTML, DEFAULT_AEM_URL } from './constants';
 
 export const OpenInAEM = ({ api }) => {
+    // Throw and log no error at this point. Not every story has to use the plugin.
+    if (! api.getCurrentStoryData() ||
+        ! api.getCurrentStoryData().parameters.openInAEM ||
+        ! api.getCurrentStoryData().parameters.openInAEM.contentPath) return null;
 
-    console.log('api:', api, Object.keys(api));
-    // api.getParamters()
-    if (api.hasOwnProperty('getParameters')) {
-        // console.log('typeof api.getParameters',typeof api.getParameters)
-        console.log('api.getParameters():', api.getParameters(api.storyId,ADDON_ID))
+    const storyData = api.getCurrentStoryData();
+    const openInAEM = storyData.parameters.openInAEM;
+    const aemUrl = openInAEM && openInAEM.aemUrl ? openInAEM.aemUrl : DEFAULT_AEM_URL;
+    const contentPath = openInAEM.contentPath;
+
+    if (! contentPath.includes(JCR_CONTENT)) {
+      console.error(`aemUrl.contentPath must contain '${JCR_CONTENT}' for the ${storyData.name} story. It was: ${contentPath}`);
+      return null;
     }
-    if (api.hasOwnProperty('getCurrentStoryData')) {
-        console.log('api.getCurrentStoryData():', api.getCurrentStoryData())
-    }
-    // const [state, setState] = useAddonState(ADDON_ID);
-    // const [param, setParam] = useParameter(ADDON_ID);
+
+    const pagePath = openInAEM.contentPath.split('/' + JCR_CONTENT)[0];
+    const fullUrl = `${aemUrl}/${EDITOR_HTML}${pagePath}.html`;
+
+    console.debug('aemUrl, contentPath, fullUrl', aemUrl, contentPath, fullUrl);
 
     return (
         <Fragment>
@@ -24,8 +31,7 @@ export const OpenInAEM = ({ api }) => {
                 key={ADDON_ID}
                 active={false}
                 title="Open this Story Content in AEM"
-                onClick={() => window.open('http://google.com')}
-            >
+                onClick={() => window.top.open(fullUrl)}>
                 <Icons icon="redirect" />
             </IconButton>
         </Fragment>

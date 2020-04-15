@@ -15,7 +15,8 @@
   "homepage": "https://github.com/icfnext/storybook-aem/tree/master/packages/storybook-aem-open-in-aem#readme",
   "scripts": {
     "build": "webpack",
-    "watch": "webpack -w"
+    "watch": "webpack -w",
+    "prepare": "npm run-script build"
   },
   "files": [
     "lib",

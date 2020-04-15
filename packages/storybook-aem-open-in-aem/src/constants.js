@@ -8,3 +8,7 @@ export const SET = `${ADDON_ID}/set`;
 export const CHANGE = `${ADDON_ID}/change`;
 export const SET_OPTIONS = `${ADDON_ID}/set-options`;
 export const CLICK = `${ADDON_ID}/click`;
+
+export const JCR_CONTENT = 'jcr:content';
+export const EDITOR_HTML = 'editor.html';
+export const DEFAULT_AEM_URL = 'localhost:4502';
