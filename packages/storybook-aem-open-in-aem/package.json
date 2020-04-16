@@ -1,6 +1,6 @@
 {
   "name": "storybook-aem-open-in-aem",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A tool for @storybook/aem to open story content that is built in AEM",
   "repository": {
     "type": "git",
