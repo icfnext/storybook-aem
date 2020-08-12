@@ -12,17 +12,31 @@ export default class Panel extends Component {
 
         this.state = { 
             policyPath: props.parameters.policy || null,
+            policyXMLFile: props.parameters.policyXMLFile || null,
+            policyJSONFile: props.parameters.policyJSONFile || null,
             policy: null,
             policyJSON: [],
             styleIdKeyValues: {},
             styleIds: props.parameters.styleIds || [],
             loading: true
         };
+        console.log('this.state:', this.state)
+        if (props.parameters.policy || props.parameters.policyJSONFile || props.parameters.policyXMLFile) {
+            this.fetchComponentPolicy();
+        }
     }
 
     storyChangedHandler(event) {
         if (this.props.parameters && this.props.parameters.policy && this.props.parameters.policy !== this.state.policyPath) {
             this.setState({ policyPath: this.props.parameters.policy });
+            this.fetchComponentPolicy();
+        }
+        if (this.props.parameters && this.props.parameters.policyXMLFile && this.props.parameters.policyXMLFile !== this.state.policyXMLFile) {
+            this.setState({ policyXMLFile: this.props.parameters.policyXMLFile });
+            this.fetchComponentPolicy();
+        }
+        if (this.props.parameters && this.props.parameters.policyJSONFile && this.props.parameters.policyJSONFile !== this.state.policyJSONFile) {
+            this.setState({ policyJSONFile: this.props.parameters.policyJSONFile });
             this.fetchComponentPolicy();
         }
         if (this.props.parameters && this.props.parameters.styleIds && this.props.parameters.styleIds !== this.state.styleIds) {
@@ -36,18 +50,22 @@ export default class Panel extends Component {
     }
 
     async fetchComponentPolicy() {
+        this.setState({ loading: true });
+        let policyJSON;
         if (this.state.policyPath) {
-            this.setState({ loading: true })
             const response = await fetch(this.state.policyPath);
-            const policyJSON = await response.json();
-            const parsedPolicy = parsePolicy(policyJSON);
-            this.setState({ 
-                loading: false,
-                policyJSON: policyJSON,
-                policy: parsedPolicy.policy,
-                styleIdKeyValues: parsedPolicy.styleIdKeyValues
-            });
+            policyJSON = await response.json();
+        } else if (this.state.policyJSONFile) {
+            policyJSON = this.state.policyJSONFile;
         }
+
+        const parsedPolicy = parsePolicy(policyJSON);
+        this.setState({ 
+            loading: false,
+            policyJSON: policyJSON,
+            policy: parsedPolicy.policy,
+            styleIdKeyValues: parsedPolicy.styleIdKeyValues
+        });
     }
 
     getClassesFromStyleIds(styleIds) {
