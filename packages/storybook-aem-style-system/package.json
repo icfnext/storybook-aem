@@ -47,5 +47,6 @@
     "path": "^0.12.7",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
-  }
+  },
+  "gitHead": "18e0f693ffc8c0260a342269ac7e2a861ee17a7f"
 }
