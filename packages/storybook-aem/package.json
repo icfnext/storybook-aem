@@ -36,7 +36,7 @@
     "chalk": "^3.0.0",
     "form-data": "^3.0.0",
     "ncp": "^2.0.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^3.1.1",
     "npm": "^6.13.0",
     "prompts": "^2.3.0",
     "unzipper": "^0.10.10",
